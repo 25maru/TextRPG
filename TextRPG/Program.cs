@@ -64,7 +64,7 @@ class Character
 
     public void ShowStatus()
     {
-        Console.WriteLine("\n========================================");
+        Console.WriteLine("\n========================================================================================================================");
         Thread.Sleep(500);
 
         Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -76,7 +76,7 @@ class Character
 
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"Lv. {Level:00}");
-        Console.WriteLine($"{Name} ( {Class} )\n");
+        Console.WriteLine($"{Name} ({Class})\n");
         Console.ResetColor();
 
         float attackBonus = TotalAttack - BaseAttack;
@@ -275,7 +275,7 @@ class Program
     // 메인 메뉴
     static void ShowMainMenu()
     {
-        Console.WriteLine("\n========================================");
+        Console.WriteLine("\n========================================================================================================================");
         Thread.Sleep(500);
 
         Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -350,7 +350,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -431,7 +431,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -486,7 +486,20 @@ class Program
 
             if (int.TryParse(input, out int index) && index >= 1 && index <= player.Inventory.Count)
             {
-                player.EquipItem(player.Inventory[index - 1]);
+                var item = player.Inventory[index - 1];
+
+                if (item.IsEquipped)
+                {
+                    item.IsEquipped = false;
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write($"'{item.Name}'");
+                    Console.ResetColor();
+
+                    Console.WriteLine("아이템의 장착을 해제했습니다.");
+                }
+                else
+                    player.EquipItem(item);
             }
             else
             {
@@ -500,10 +513,9 @@ class Program
     // 3. 상점
     static void ShowShop()
     {
-
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -571,7 +583,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -662,7 +674,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -801,7 +813,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -875,7 +887,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -931,7 +943,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("\n========================================");
+            Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
