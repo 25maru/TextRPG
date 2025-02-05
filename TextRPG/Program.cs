@@ -852,9 +852,6 @@ class Program
                 case "4":
                     Console.WriteLine("업데이트 예정입니다!");
                     break;
-                case "5":
-                    Console.WriteLine("업데이트 예정입니다!");
-                    break;
                 case "0":
                     break;
                 default:
