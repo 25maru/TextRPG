@@ -792,7 +792,76 @@ class Program
     // 4. 던전
     static void ShowDungeon()
     {
-        // TODO 던전 기능 추가
+        while (true)
+        {
+            Console.WriteLine("\n========================================");
+            Thread.Sleep(500);
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("\n던전");
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("이곳에서 입장할 던전을 선택할 수 있습니다.\n");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("1");
+            Console.ResetColor();
+            Console.WriteLine(". 초급 던전");
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("2");
+            Console.ResetColor();
+            Console.WriteLine(". 중급 던전");
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("3");
+            Console.ResetColor();
+            Console.WriteLine(". 상급 던전");
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("4");
+            Console.ResetColor();
+            Console.Write(". ");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("극악 던전");
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("0");
+            Console.ResetColor();
+            Console.WriteLine(". 나가기\n");
+
+            Console.WriteLine("원하시는 행동을 입력해주세요.");
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write(">> ");
+            string input = Console.ReadLine();
+            Console.ResetColor();
+
+            switch (input)
+            {
+                case "1":
+                    Console.WriteLine("업데이트 예정입니다!");
+                    break;
+                case "2":
+                    Console.WriteLine("업데이트 예정입니다!");
+                    break;
+                case "3":
+                    Console.WriteLine("업데이트 예정입니다!");
+                    break;
+                case "4":
+                    Console.WriteLine("업데이트 예정입니다!");
+                    break;
+                case "5":
+                    Console.WriteLine("업데이트 예정입니다!");
+                    break;
+                default:
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                    Console.ResetColor();
+                    break;
+            }
+        }
     }
 
     // 5. 광산
