@@ -872,7 +872,7 @@ class Program
                     Console.WriteLine("'극악 던전'은 업데이트 예정입니다!");
                     break;
                 case "0":
-                    break;
+                    return;
                 default:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
@@ -928,7 +928,7 @@ class Program
                     Console.WriteLine("'요일 광산'은 업데이트 예정입니다!");
                     break;
                 case "0":
-                    break;
+                    return;
                 default:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
