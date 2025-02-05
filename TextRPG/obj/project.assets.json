@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\TeamSparta\\TextRPG\\TextRPG\\TextRPG.csproj",
+      "projectUniqueName": "E:\\Git\\TextRPG\\TextRPG\\TextRPG.csproj",
       "projectName": "TextRPG",
-      "projectPath": "E:\\TeamSparta\\TextRPG\\TextRPG\\TextRPG.csproj",
+      "projectPath": "E:\\Git\\TextRPG\\TextRPG\\TextRPG.csproj",
       "packagesPath": "C:\\Users\\jiwon\\.nuget\\packages\\",
-      "outputPath": "E:\\TeamSparta\\TextRPG\\TextRPG\\obj\\",
+      "outputPath": "E:\\Git\\TextRPG\\TextRPG\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
