@@ -109,16 +109,6 @@ class Character
         else
             Console.WriteLine($"방어력 :  {TotalDefense}");
 
-        // Console.Write($"공격력 : {TotalAttack}");
-        // Console.ForegroundColor = ConsoleColor.DarkGreen;
-        // Console.WriteLine($" {(attackBonus > 0 ? $"(+{attackBonus})" : "")}");
-        // Console.ResetColor();
-
-        // Console.Write($"방어력 : {TotalDefense}");
-        // Console.ForegroundColor = ConsoleColor.DarkGreen;
-        // Console.WriteLine($" {(defenseBonus > 0 ? $"(+{defenseBonus})" : "")}");
-        // Console.ResetColor();
-
         Console.WriteLine($"체력   :  {Health}");
         Console.WriteLine($"Gold   :  {Gold} G\n");
 
