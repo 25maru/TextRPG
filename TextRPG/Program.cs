@@ -30,6 +30,7 @@ class Character
         return total;
     }
 
+    // Todo: 던전 클리어를 통해 레벨업이 이루어지도록 구현
     public void LevelUp()
     {
         BaseAttack += 0.5f;
