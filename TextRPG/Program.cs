@@ -866,7 +866,57 @@ class Program
     // 5. 광산
     static void ShowMine()
     {
-        // TODO 광산 기능 추가
+        while (true)
+        {
+            Console.WriteLine("\n========================================");
+            Thread.Sleep(500);
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("\n광산");
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("이곳에서 골드를 획득할 수 있습니다.\n");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("1");
+            Console.ResetColor();
+            Console.WriteLine(". 기본 광산");
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("2");
+            Console.ResetColor();
+            Console.WriteLine(". 요일 광산");
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("0");
+            Console.ResetColor();
+            Console.WriteLine(". 나가기\n");
+
+            Console.WriteLine("원하시는 행동을 입력해주세요.");
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write(">> ");
+            string input = Console.ReadLine();
+            Console.ResetColor();
+
+            switch (input)
+            {
+                case "1":
+                    Console.WriteLine("'기본 광산'은 업데이트 예정입니다!");
+                    break;
+                case "2":
+                    Console.WriteLine("'요일 광산'은 업데이트 예정입니다!");
+                    break;
+                case "0":
+                    break;
+                default:
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                    Console.ResetColor();
+                    break;
+            }
+        }
     }
 
     // 6. 휴식하기
