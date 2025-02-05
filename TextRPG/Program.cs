@@ -841,16 +841,16 @@ class Program
             switch (input)
             {
                 case "1":
-                    Console.WriteLine("업데이트 예정입니다!");
+                    Console.WriteLine("'초급 던전'은 업데이트 예정입니다!");
                     break;
                 case "2":
-                    Console.WriteLine("업데이트 예정입니다!");
+                    Console.WriteLine("'중급 던전'은 업데이트 예정입니다!");
                     break;
                 case "3":
-                    Console.WriteLine("업데이트 예정입니다!");
+                    Console.WriteLine("'상급 던전'은 업데이트 예정입니다!");
                     break;
                 case "4":
-                    Console.WriteLine("업데이트 예정입니다!");
+                    Console.WriteLine("'극악 던전'은 업데이트 예정입니다!");
                     break;
                 case "0":
                     break;
