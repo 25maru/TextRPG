@@ -30,6 +30,12 @@ class Character
         return total;
     }
 
+    public void LevelUp()
+    {
+        BaseAttack += 0.5f;
+        BaseDefense += 1f;
+    }
+
     public void EquipItem(Item item)
     {
         foreach (var equippedItem in Inventory)
