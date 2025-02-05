@@ -855,6 +855,8 @@ class Program
                 case "5":
                     Console.WriteLine("업데이트 예정입니다!");
                     break;
+                case "0":
+                    break;
                 default:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
