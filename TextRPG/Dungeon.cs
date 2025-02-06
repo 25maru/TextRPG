@@ -26,7 +26,10 @@ public class Dungeon
             if (Time <= 0)
                 Time = 0;
 
-            
+            TimeSpan timeSpan = TimeSpan.FromSeconds(Time);
+            string formattedTime = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
+
+            Console.Write($"\r남은 시간: {formattedTime}");
 
             Thread.Sleep(1000);
         }
