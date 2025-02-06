@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "E:\\Git\\TextRPG\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|e:\\git\\textrpg\\textrpg\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|solutionrelative:textrpg\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|e:\\git\\textrpg\\textrpg\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|solutionrelative:textrpg\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|e:\\git\\textrpg\\textrpg\\dungeon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|solutionrelative:textrpg\\dungeon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|e:\\git\\textrpg\\textrpg\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|solutionrelative:textrpg\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|e:\\git\\textrpg\\textrpg\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A7A8E1B-44AB-4613-B595-A6A51F2AC77C}|TextRPG\\TextRPG.csproj|solutionrelative:textrpg\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,39 +30,52 @@
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Dungeon.cs",
+              "DocumentMoniker": "E:\\Git\\TextRPG\\TextRPG\\Dungeon.cs",
+              "RelativeDocumentMoniker": "TextRPG\\Dungeon.cs",
+              "ToolTip": "E:\\Git\\TextRPG\\TextRPG\\Dungeon.cs*",
+              "RelativeToolTip": "TextRPG\\Dungeon.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-06T07:13:23.8Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Item.cs",
               "DocumentMoniker": "E:\\Git\\TextRPG\\TextRPG\\Item.cs",
               "RelativeDocumentMoniker": "TextRPG\\Item.cs",
               "ToolTip": "E:\\Git\\TextRPG\\TextRPG\\Item.cs",
               "RelativeToolTip": "TextRPG\\Item.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-06T00:41:57.042Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Character.cs",
               "DocumentMoniker": "E:\\Git\\TextRPG\\TextRPG\\Character.cs",
               "RelativeDocumentMoniker": "TextRPG\\Character.cs",
               "ToolTip": "E:\\Git\\TextRPG\\TextRPG\\Character.cs",
               "RelativeToolTip": "TextRPG\\Character.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAAIMAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-06T00:38:43.473Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "E:\\Git\\TextRPG\\TextRPG\\Program.cs",
               "RelativeDocumentMoniker": "TextRPG\\Program.cs",
               "ToolTip": "E:\\Git\\TextRPG\\TextRPG\\Program.cs",
               "RelativeToolTip": "TextRPG\\Program.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAAGQAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAAAF8CAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-04T05:27:50.796Z",
               "EditorCaption": ""

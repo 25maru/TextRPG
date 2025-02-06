@@ -634,7 +634,7 @@ class GameManager
                     InfoText("'상급 던전'은 업데이트 예정입니다!");
                     break;
                 case "4":
-                    InfoText("'극악 던전'은 업데이트 예정입니다!");
+                    InfoText("'지옥 던전'은 업데이트 예정입니다!");
                     break;
                 case "0":
                     return;
