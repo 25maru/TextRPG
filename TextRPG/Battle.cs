@@ -3,11 +3,13 @@
 // 이상범님
 public class Battle
 {
-    //이상범입니다.
-    //이상범입니다. 010
     public List<Monster> monsters = new List<Monster>();
     GameManager GM = new GameManager();
 
+    public Battle()
+    {
+
+    }
     public void InstantiateMonster()
     {
         monsters.Add(new Monster());
@@ -19,21 +21,34 @@ public class Battle
     {
         GM.ShowHeader("","");
         Console.WriteLine("BATTLE !!!");
+        /*
+        while ()
+        {
+            PlayerTurn();
+            MonsterTurn();
+        }
+        */
     }
 
     public void PlayerTurn()
     {
-        Console.WriteLine("플레이어의 턴입니다.");
+        Console.WriteLine("PlayerTurn Method");
+        
     }
 
     public void MonsterTurn()
     {
+        Console.WriteLine("MonsterTurnMethod");
+    }
 
+    public void Attack()
+    {
+        Console.WriteLine("AttackMethod");
     }
 
     public void GetDamage()
     {
-
+        Console.WriteLine("GetDamageMethod");
     }
 
     public void ClearDungeon()
@@ -45,6 +60,6 @@ public class Battle
 
     public void ExitDungeon()
     {
-
+        Console.WriteLine("ExitDungeonMethod");
     }
 }
