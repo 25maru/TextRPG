@@ -2,20 +2,34 @@
 
 public class Character
 {
-    public string Name { get; set; } = "플레이어";
-    public string Class { get; } = "전사";
-    public int Level { get; } = 1;
-    public float BaseAttack { get; } = 10f;
-    public float BaseDefense { get; } = 5f;
-    public int Health { get; set; } = 100;
-    public float MaxHealth { get; } = 100;
-    public int Gold { get; set; } = 1500;
+    public string Name { get; set; }
+    public string Class { get; }
+    public int Level { get; }
 
-    public List<Item> Inventory { get; set; } = new List<Item>();
+    public float BaseAttack { get; }
+    public float BaseDefense { get; }
+    public int Health { get; set; }
+    public int MaxHealth { get; }
+
+    public int Gold { get; set; }
+    public List<Item> Inventory { get; set; }
 
     public float TotalAttack => BaseAttack + GetTotalBonus("attack");
     public float TotalDefense => BaseDefense + GetTotalBonus("defense");
 
+    public Character(string name, string job, int level, float attack, float defense, int health, int gold)
+    {
+        Name = name;
+        Class = job;
+        Level = level;
+        BaseAttack = attack;
+        BaseDefense = defense;
+        Health = health;
+        MaxHealth = health;
+        Gold = gold;
+        Inventory = new List<Item>();
+    }
+        
     private float GetTotalBonus(string type)
     {
         float total = 0f;
@@ -106,22 +120,34 @@ public class Character
         else
             Console.WriteLine($"방어력 :  {TotalDefense}");
 
-        Console.WriteLine($"체력   :  {Health}");
+        Console.WriteLine($"체력   :  {Health}/{MaxHealth}");
         Console.WriteLine($"Gold   :  {Gold} G\n");
 
         Console.ForegroundColor = ConsoleColor.DarkCyan;
         Console.Write("0");
         Console.ResetColor();
-        Console.WriteLine(". 나가기\n");
+        Console.WriteLine(". 나가기");
     }
 
+    // 휴식
     public void Rest()
     {
         if (Gold >= 500 && Health < 100)
         {
             Gold -= 500;
-            Health = 100;
-            Console.WriteLine("휴식을 완료했습니다. 체력이 모두 회복되었습니다.\n");
+
+            while (Health < MaxHealth)
+            {
+                Health += 10;
+
+                if (Health >= MaxHealth)
+                    Health = 100;
+
+                Console.Write($"\r현재 체력: {Health}/{MaxHealth}");
+
+                Thread.Sleep(1000);
+            }
+            Console.WriteLine("\n휴식을 완료했습니다. 체력이 모두 회복되었습니다.");
         }
         else if (Gold < 500)
         {

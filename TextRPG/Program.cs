@@ -8,7 +8,6 @@ class Program
     static void Main(string[] args)
     {
         GameManager gameManager = new GameManager();
-
         gameManager.GameStart();
     }
 }
@@ -20,7 +19,10 @@ class GameManager
     
     public GameManager()
     { 
-        player = new Character();
+        // 캐릭터 (이름, 직업, 레벨, 공격력, 방어력, 체력, 골드)
+        player = new Character("플레이어", "전사", 1, 10f, 5f, 100, 1500);
+
+        // 아이템 (이름, 설명, 타입, 보너스: 값, 가격: 값)
         shopItems = new List<Item>()
         {
             new Item("낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", ItemType.Weapon, attackBonus: 2f, price: 500),
@@ -32,7 +34,7 @@ class GameManager
             new Item("스파르타의 방패", "스파르타의 전사들이 사용했다는 전설의 방패입니다.", ItemType.Shield, defenseBonus: 15f, price: 5000),
             new Item("스파르타의 투구", "스파르타의 전사들이 사용했다는 전설의 투구입니다.", ItemType.Helmet, defenseBonus: 15f, price: 5000),
             new Item("스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", ItemType.Armor, defenseBonus: 15f, price: 5000),
-            new Item("WA2000", "매우 강력합니다.", ItemType.Weapon, attackBonus: 2000f, price: 2000000),
+            new Item("아케인셰이드 투핸드소드", "스타포스 22성 레전드리 무기입니다.", ItemType.Weapon, attackBonus: 1223f, price: 2000000),
         };
     }
 
@@ -128,7 +130,6 @@ class GameManager
         // 초보자 아이템 획득
         player.Inventory.Add(new Item("장난감 칼", "한 번 휘두르면 부러질 것 같습니다.", ItemType.Weapon, attackBonus: 0f) { IsEquipped = true, CanSell = false });
         player.Inventory.Add(new Item("낡은 가죽 갑옷", "공격을 막기에는 너무 약합니다.", ItemType.Armor, defenseBonus: 0f) { IsEquipped = true, CanSell = false });
-        player.Inventory.Add(new Item("아케인셰이드 투핸드소드", "스타포스 22성 레전드리 무기입니다.", ItemType.Weapon, attackBonus: 1223f) { CanSell = false });
     }
 
     // 메인 메뉴
@@ -211,6 +212,9 @@ class GameManager
 
             Console.WriteLine("[아이템 목록]");
 
+            string longestItem = player.Inventory.OrderByDescending(item => GetDisplayWidth(item.Name)).First().Name;
+            int longestBonus = player.Inventory.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+
             if (player.Inventory.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -222,9 +226,9 @@ class GameManager
                 foreach (var item in player.Inventory)
                 {
                     string equippedMarker = item.IsEquipped ? "[E] " : "[ ] ";
-                    string name = FormatString($"{item.Name}", 24);
+                    string name = FormatString($"{item.Name}", GetDisplayWidth(longestItem));
                     string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
-                    bonus = FormatString(bonus, 12);
+                    bonus = FormatString(bonus, 8 + longestBonus);
 
                     Console.Write("- ");
 
@@ -274,13 +278,16 @@ class GameManager
 
             Console.WriteLine("[아이템 목록]");
 
+            string longestItem = player.Inventory.OrderByDescending(item => GetDisplayWidth(item.Name)).First().Name;
+            int longestBonus = player.Inventory.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+
             for (int i = 0; i < player.Inventory.Count; i++)
             {
                 var item = player.Inventory[i];
                 string equippedMarker = item.IsEquipped ? "[E] " : "[ ] ";
-                string name = FormatString($"{item.Name}", 24);
+                string name = FormatString($"{item.Name}", GetDisplayWidth(longestItem));
                 string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
-                bonus = FormatString(bonus, 12);
+                bonus = FormatString(bonus, 8 + longestBonus);
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.Write($"{i + 1}");
@@ -348,13 +355,18 @@ class GameManager
             Console.ResetColor();
 
             Console.WriteLine("[아이템 목록]");
+
+            string longestItem = shopItems.OrderByDescending(item => GetDisplayWidth(item.Name)).First().Name;
+            int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+            string longestDescription = shopItems.OrderByDescending(item => GetDisplayWidth(item.Description)).First().Description;
+
             for (int i = 0; i < shopItems.Count; i++)
             {
                 var item = shopItems[i];
-                string name = FormatString($"{item.Name}", 16);
+                string name = FormatString($"{item.Name}", GetDisplayWidth(longestItem));
                 string bonus = item.AttackBonus > 0 ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
-                bonus = FormatString(bonus, 12);
-                string description = FormatString($"{item.Description}", 50);
+                bonus = FormatString(bonus, 8 + longestBonus);
+                string description = FormatString($"{item.Description}", GetDisplayWidth(longestDescription));
                 string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
 
                 if (item.IsPurchased)
@@ -404,13 +416,19 @@ class GameManager
             Console.ResetColor();
 
             Console.WriteLine("[아이템 목록]");
+
+            string longestItem = shopItems.OrderByDescending(item => GetDisplayWidth(item.Name)).First().Name;
+            int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+            string longestDescription = shopItems.OrderByDescending(item => GetDisplayWidth(item.Description)).First().Description;
+
             for (int i = 0; i < shopItems.Count; i++)
             {
                 var item = shopItems[i];
-                string name = FormatString($"{item.Name}", 16);
+
+                string name = FormatString($"{item.Name}", GetDisplayWidth(longestItem));
                 string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
-                bonus = FormatString(bonus, 12);
-                string description = FormatString($"{item.Description}", 50);
+                bonus = FormatString(bonus, 8 + longestBonus);
+                string description = FormatString($"{item.Description}", GetDisplayWidth(longestDescription));
                 string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -481,15 +499,19 @@ class GameManager
                 InfoText("판매할 아이템이 없습니다.");
             else
             {
+                string longestItem = player.Inventory.OrderByDescending(item => GetDisplayWidth(item.Name)).First().Name;
+                int longestBonus = player.Inventory.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+                string longestDescription = player.Inventory.OrderByDescending(item => GetDisplayWidth(item.Description)).First().Description;
+
                 for (int i = 0; i < player.Inventory.Count; i++)
                 {
                     var item = player.Inventory[i];
                     int sellPrice = (int)(item.Price * 0.85);
 
-                    string name = FormatString($"{item.Name}", 24);
+                    string name = FormatString($"{item.Name}", GetDisplayWidth(longestItem));
                     string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
-                    bonus = FormatString(bonus, 12);
-                    string description = FormatString($"{item.Description}", 50);
+                    bonus = FormatString(bonus, 8 + longestBonus);
+                    string description = FormatString($"{item.Description}", GetDisplayWidth(longestDescription));
                     string price = item.CanSell ? $"{sellPrice} G" : "판매불가";
 
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -540,32 +562,33 @@ class GameManager
                         Console.Write("(");
 
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write("0");
+                        Console.Write("Y");
 
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write(". 나가기 / ");
+                        Console.Write(". 판매하기 / ");
 
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write("1");
+                        Console.Write("N");
 
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine(". 판매하기)");
+                        Console.WriteLine(". 나가기)");
 
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.Write(">> ");
                         string choice = Console.ReadLine();
                         Console.ResetColor();
 
-                        if (choice == "0")
-                            break;
-
-                        if (choice == "1")
+                        if (choice == "Y")
                         {
                             player.Gold += (int)(item.Price * 0.85);
                             item.IsPurchased = false;
                             player.Inventory.Remove(item);
                             Console.WriteLine("판매를 완료했습니다.");
                         }
+                        else if (choice == "N")
+                            break;
+                        else
+                            ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
                     }
                     else
                     {
@@ -660,6 +683,9 @@ class GameManager
     {
         while (true)
         {
+            // 체력 회복 테스트를 위한 임시 코드
+            player.Health -= 40;
+
             ShowHeader("휴식", "500 G 를 내면 체력을 회복할 수 있습니다.");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
