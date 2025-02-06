@@ -22,12 +22,12 @@ public class Monster
         IsDead = false;
     }
 
-    public int Attack(string name) //몬스터의 공격(텍스트 출력 포함) - name : 플레이어의 이름 - return은 데미지
+    public int Attacking(string name) //몬스터의 공격(텍스트 출력 포함) - name : 플레이어의 이름 - return은 데미지
     {
         Console.Write("Lv.");
 
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write($"{Level}");
+        Console.Write($"{Level} ");
 
         Console.ResetColor();
         Console.Write($"{Name} 의 공격");
@@ -43,6 +43,9 @@ public class Monster
 
         Console.ResetColor();
         Console.WriteLine("]");
+
+        Console.ResetColor();
+        Console.WriteLine("");
 
         return Attack;
     }
@@ -70,7 +73,10 @@ public class Monster
         Console.WriteLine("]");
 
         Console.ResetColor();
-        Console.Write("Lv.");
+        Console.WriteLine("");
+
+        Console.ResetColor();
+        Console.Write("Lv. ");
 
         Console.ForegroundColor = ConsoleColor.Red;
         Console.Write($"{Level} ");
@@ -93,6 +99,9 @@ public class Monster
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{Health}");
+
+            Console.ResetColor();
+            Console.WriteLine("");
         }
         else
         {
@@ -110,27 +119,48 @@ public class Monster
 
             Console.ResetColor();
             Console.WriteLine("Dead");
+
+            Console.ResetColor();
+            Console.WriteLine("");
         }
     }
 
     public void ShowMonster(int number) //몬스터 출력 - number : 몇 번째 몬스터인지
     {
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.Write($"{number} ");
+        if (IsDead == false)
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write($"{number} ");
 
-        Console.ResetColor();
-        Console.Write("Lv.");
+            Console.ResetColor();
+            Console.Write("Lv.");
 
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write($"{Level} ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write($"{Level} ");
 
-        Console.ResetColor();
-        Console.Write($"{Name}");
+            Console.ResetColor();
+            Console.Write($"{Name} ");
 
-        Console.ResetColor();
-        Console.Write("HP ");
+            Console.ResetColor();
+            Console.Write("HP ");
 
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"{Health}");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{Health}");
+            Console.ResetColor();
+        }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write($"{number} ");
+
+            Console.Write("Lv.");
+
+            Console.Write($"{Level} ");
+
+            Console.Write($"{Name} ");
+
+            Console.WriteLine($"Dead");
+            Console.ResetColor();
+        }
     }
 }
