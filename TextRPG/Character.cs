@@ -30,6 +30,7 @@ public class Character
         Inventory = new List<Item>();
     }
         
+    // 착용한 장비의 공격력&방어력 보너스 합산
     private float GetTotalBonus(string type)
     {
         float total = 0f;
@@ -51,6 +52,7 @@ public class Character
         // BaseDefense += 1f;
     }
 
+    // 장비 장착
     public void EquipItem(Item item)
     {
         foreach (var equippedItem in Inventory)
@@ -76,6 +78,7 @@ public class Character
         Console.WriteLine("아이템을 장착했습니다.");
     }
 
+    // 상태 보기
     public void ShowStatus()
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
