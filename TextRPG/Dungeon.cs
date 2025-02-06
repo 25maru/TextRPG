@@ -7,8 +7,8 @@ public class Dungeon
     public List<Monster> Monsters { get; set; }
 
     public Dungeon(string name)
-    { 
+    {
         Name = name;
         Monsters = new List<Monster>();
     }
-}   
+}
