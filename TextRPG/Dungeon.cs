@@ -4,11 +4,31 @@
 public class Dungeon
 {
     public string Name { get; }
+
+    public int Time { get; set; }
+
     public List<Monster> Monsters { get; set; }
 
     public Dungeon(string name)
     {
         Name = name;
         Monsters = new List<Monster>();
+    }
+
+    public void SetTimer(int startTime)
+    {
+        Time = startTime;
+
+        while (Time >= 0)
+        {
+            Time--;
+
+            if (Time <= 0)
+                Time = 0;
+
+            
+
+            Thread.Sleep(1000);
+        }
     }
 }
