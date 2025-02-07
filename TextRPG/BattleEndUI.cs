@@ -23,15 +23,19 @@ public class BattleEndUI
         switch (input)
         {
             case "1":
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("500 Gold를 획득하셨습니다.");
                 break;
             case "2":
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("회복 물약을 획득하셨습니다.");
                 break;
             case "3":
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("랜덤 상자를 획득하셨습니다.");
                 break;
             default:
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다.");
                 break;
         }
