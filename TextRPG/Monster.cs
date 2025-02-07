@@ -3,11 +3,11 @@
 // 송영주님
 public class Monster
 {
-    private string Name {  get; set; }
-    private int Level { get; set; }
-    private int Health { get; set; }
-    private int Attack { get; set; }
-    private bool IsDead { get; set; }
+    public string Name {  get; set; }
+    public int Level { get; set; }
+    public int Health { get; set; }
+    public int Attack { get; set; }
+    public bool IsDead { get; set; }
 
     public Monster(string name, int level, int health, int attack)
     {
