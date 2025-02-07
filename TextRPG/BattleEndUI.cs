@@ -15,7 +15,26 @@ public class BattleEndUI
     private static void GiveReward(List<Monster> monsters)
     {
         Console.WriteLine("전투를 승리하였습니다");
+        Console.WriteLine("원하시는 보상을 선택하세요.");
+        Console.WriteLine("1. 500 Gold\n2.회복 물약\n3. 랜덤상자");
+        Console.ReadLine();
 
+        string input = Console.ReadLine();
+        switch (input)
+        {
+            case "1":
+                Console.WriteLine("500 Gold를 획득하셨습니다.");
+                break;
+            case "2":
+                Console.WriteLine("회복 물약을 획득하셨습니다.");
+                break;
+            case "3":
+                Console.WriteLine("랜덤 상자를 획득하셨습니다.");
+                break;
+            default:
+                Console.WriteLine("잘못된 입력입니다.");
+                break;
+        }
         for (int i = 0; i < monsters.Count; i++)
         {
             Console.WriteLine($"처치한 몬스터:{monsters[i]}");
