@@ -35,7 +35,7 @@ class GameManager
             new Monster("오우거", 6, 45, 18),
             new Monster("자이언트", 10, 60, 20)
         }),
-        new Dungeon("상급 던전", 1, 1, new List<Monster>
+        new Dungeon("상급 던전", 5, 10, new List<Monster>
         {
             new Monster("다크엘프", 20, 100, 30),
             new Monster("암흑기사", 15, 120, 30),
