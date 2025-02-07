@@ -1,4 +1,6 @@
-﻿// 송영주님
+﻿using System;
+
+// 송영주님
 public class Monster
 {
     public string Name {  get; set; }

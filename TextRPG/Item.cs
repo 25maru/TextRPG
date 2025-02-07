@@ -1,4 +1,6 @@
-﻿public enum ItemType
+﻿using System;
+
+public enum ItemType
 {
     Weapon,
     Shield,

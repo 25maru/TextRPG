@@ -1,4 +1,4 @@
-﻿using Tool;
+﻿using System;
 
 public class Character
 {
@@ -127,7 +127,7 @@ public class Character
         Console.WriteLine($"체력   :  {Health}/{MaxHealth}");
         Console.WriteLine($"Gold   :  {Gold} G\n");
 
-        Utils.OptionText(0, "나가기");
+        GameManager.Instance.OptionText(0, "나가기");
     }
 
     // 휴식
@@ -151,8 +151,8 @@ public class Character
             Console.WriteLine("\n휴식을 완료했습니다. 체력이 모두 회복되었습니다.");
         }
         else if (Gold < 500)
-            Utils.ErrorText("Gold 가 부족합니다.");
+            GameManager.Instance.ErrorText("Gold 가 부족합니다.");
         else
-            Utils.ErrorText("이미 최대 체력입니다.");
+            GameManager.Instance.ErrorText("이미 최대 체력입니다.");
     }
 }

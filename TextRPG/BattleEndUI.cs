@@ -1,4 +1,5 @@
-﻿using Tool;
+﻿using System;
+using System.ComponentModel.Design;
 
 // 최보윤님
 public class BattleEndUI
@@ -19,7 +20,7 @@ public class BattleEndUI
         Console.ReadLine();
 
 
-        switch (Utils.GetInput(1, 3))
+        switch (GameManager.Instance.GetInput(1, 3))
         {
             case 1:
                 Console.ForegroundColor = ConsoleColor.Yellow;

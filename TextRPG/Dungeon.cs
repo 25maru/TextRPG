@@ -1,4 +1,5 @@
-﻿using Tool;
+﻿using System;
+using System.Collections.Generic;
 
 // 박지원님
 public class Dungeon
@@ -9,23 +10,23 @@ public class Dungeon
     public int MaxMonsterCount { get; }
     public List<Monster> Monsters { get; set; }
 
-    private Battle battle;
-
     public Dungeon(string name, int min, int max, List<Monster> monsters)
     {
         Name = name;
         MinMonsterCount = min;
         MaxMonsterCount = max;
-        Monsters = monsters ?? new List<Monster>();
+        Monsters = monsters;
     }
 
     // TODO: 같은 몬스터의 경우 데미지를 같이 받는 문제 수정
     // 체력, 골드 반영 안되는 문제
     // UI 디자인 최적화
 
+    private Battle battle;
+
     public void Enter(Character player)
     {
-        Utils.ShowHeader("", "");
+        GameManager.Instance.ShowHeader("", "");
 
         Console.ForegroundColor = ConsoleColor.DarkCyan;
         Console.Write($"\n{Name}");
@@ -36,6 +37,8 @@ public class Dungeon
         Random rand = new Random();
         int monsterCount = rand.Next(MinMonsterCount, MaxMonsterCount + 1);
         List<Monster> selectedMonsters = new List<Monster>();
+
+        battle = new Battle(player, selectedMonsters, new List<Item>());
 
         for (int i = 0; i < monsterCount; i++)
         {
@@ -50,26 +53,26 @@ public class Dungeon
 
         Console.WriteLine();
 
-        battle = new Battle(player, selectedMonsters, new List<Item>());
         battle.StartBattle();
     }
 
-    public async Task SetTimerAsync(int startTime)
+    public void SetTimer(int startTime)
     {
-        Time = Math.Max(startTime, 0);
+        Time = startTime;
 
-        while (Time > 0)
+        while (Time >= 0)
         {
             Time--;
 
+            if (Time <= 0)
+                Time = 0;
+
             TimeSpan timeSpan = TimeSpan.FromSeconds(Time);
-            string formattedTime = $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+            string formattedTime = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
 
             Console.Write($"\r남은 시간: {formattedTime}");
 
-            await Task.Delay(1000);
+            Thread.Sleep(1000);
         }
-
-        Console.WriteLine("\n타임 오버");
     }
 }

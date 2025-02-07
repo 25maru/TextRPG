@@ -1,7 +1,12 @@
-﻿public class InventoryScene : Scene
-{
-    public override void Open()
-    {
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace TextRPG.Scenes
+{
+    internal class InventoryScene
+    {
     }
 }

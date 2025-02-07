@@ -1,13 +1,14 @@
-﻿using Tool;
+﻿using System;
+using System.Runtime.Serialization.Formatters;
 
 // 이상범님
 public class Battle
 {
-    private GameManager GM = GameManager.Instance;
-
     public List<Monster> _monsters;
     public Character _character;
     public List<Item> _rewarditem;
+
+    GameManager GM = GameManager.Instance;
 
     /// <summary>
     /// 캐릭터, 몬스터 리스트, 리워드 리스트
@@ -21,7 +22,7 @@ public class Battle
 
     public void StartBattle()
     {
-        Utils.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
+        GM.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
 
         while ((!_character.IsDead) && (isAliveMonstersExists(_monsters))) // 몬스터 사망처리
         { 
@@ -68,18 +69,23 @@ public class Battle
 
     public void PlayerTurn() //플레이어의 턴
     {
-        for (int i = 0; i < CountAliveMonsters(_monsters); i++) //몬스터 현재 상태 보여주기
-        {
-            _monsters[i].ShowMonster(i+1);
-        }
 
+        foreach (var monster in _monsters)
+        {
+
+            //Console.WriteLine("플레이어 턴 메소드 입니다.");
+        }
+        for (int i = 0; i < CountAliveMonsters(_monsters); i++) //몬스터 현재 상태 보여주기
+                {
+                    _monsters[i].ShowMonster(i+1);
+                }
         Console.WriteLine();
 
-        Utils.OptionText(1, "공격");
-        Utils.OptionText(2, "회복 포션 사용");
-        Utils.OptionText(3, "공격 포션 사용");
+        GM.OptionText(1, "공격");
+        GM.OptionText(2, "회복 포션 사용");
+        GM.OptionText(3, "공격 포션 사용");
 
-        int KeyCode = Utils.GetInput(1, 3);
+        int KeyCode = GM.GetInput(1, 3);
         switch (KeyCode)
         {
             case 1:
@@ -89,7 +95,7 @@ public class Battle
                 {
                     _monsters[i].ShowMonster(i + 1);
                 }
-                int _TargetMonster = Utils.GetInput(0, _monsters.Count+1);
+                int _TargetMonster = GM.GetInput(0, _monsters.Count+1);
                 PlayerAttack(_character, _monsters[_TargetMonster - 1], (int)_character.TotalAttack);
                 break;
 

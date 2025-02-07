@@ -1,10 +1,15 @@
-﻿using Tool;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using Tool;
 
 public class Program
 {
     static void Main(string[] args)
     {
-        GameManager.Instance.GameStart();
+        GameManager gameManager = new GameManager();
+        gameManager.GameStart();
     }
 }
 
@@ -13,10 +18,37 @@ public class GameManager
     private static GameManager instance;
     public static GameManager Instance => instance ??= new GameManager();
 
-    public Character player;
-
+    private Character player;
     private List<Item> shopItems;
-    private List<Dungeon> dungeons;
+    private List<Dungeon> dungeons = new List<Dungeon>
+    {
+        // 던전 (이름, 최소 스폰량, 최대 스폰량, 몹 테이블)
+        new Dungeon("초급 던전", 1, 4, new List<Monster>
+        {
+            // 몬스터 (이름, 레벨, 체력, 공격력)
+            new Monster("슬라임", 2, 20, 5),
+            new Monster("고블린", 3, 25, 7),
+            new Monster("늑대", 4, 30, 8)
+        }),
+        new Dungeon("중급 던전", 3, 6, new List<Monster>
+        {
+            new Monster("골렘", 8, 50, 15),
+            new Monster("오우거", 6, 45, 18),
+            new Monster("자이언트", 10, 60, 20)
+        }),
+        new Dungeon("상급 던전", 5, 10, new List<Monster>
+        {
+            new Monster("다크엘프", 20, 100, 30),
+            new Monster("암흑기사", 15, 120, 30),
+            new Monster("타락한 마법사", 25, 80, 40)
+        }),
+        new Dungeon("보스 던전", 1, 1, new List<Monster>
+        {
+            new Monster("고대 드래곤", 20, 200, 60),
+            new Monster("엘드리치", 15, 180, 75),
+            new Monster("마왕", 25, 250, 50)
+        })
+    };
     
     public GameManager()
     { 
@@ -37,38 +69,119 @@ public class GameManager
             new Item("스파르타의 갑옷", "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", ItemType.Armor, defenseBonus: 15f, price: 5000),
             new Item("아케인셰이드 투핸드소드", "스타포스 22성 레전드리 무기입니다.", ItemType.Weapon, attackBonus: 1223f, price: 2000000),
         };
-
-        dungeons = new List<Dungeon>
-        {
-            // 던전 (이름, 최소 스폰량, 최대 스폰량, 몹 테이블)
-            new Dungeon("초급 던전", 1, 4, new List<Monster>
-            {
-                // 몬스터 (이름, 레벨, 체력, 공격력)
-                new Monster("슬라임", 2, 20, 5),
-                new Monster("고블린", 3, 25, 7),
-                new Monster("늑대", 4, 30, 8)
-            }),
-            new Dungeon("중급 던전", 3, 6, new List<Monster>
-            {
-                new Monster("골렘", 8, 50, 15),
-                new Monster("오우거", 6, 45, 18),
-                new Monster("자이언트", 10, 60, 20)
-            }),
-            new Dungeon("상급 던전", 5, 10, new List<Monster>
-            {
-                new Monster("다크엘프", 20, 100, 30),
-                new Monster("암흑기사", 15, 120, 30),
-                new Monster("타락한 마법사", 25, 80, 40)
-            }),
-            new Dungeon("보스 던전", 1, 1, new List<Monster>
-            {
-                new Monster("고대 드래곤", 20, 200, 60),
-                new Monster("엘드리치", 15, 180, 75),
-                new Monster("마왕", 25, 250, 50)
-            })
-        };
     }
 
+    #region Style
+    /// <summary>
+    /// 이전 장면과 구분할 수 있는 선 추가
+    /// 장면의 이름과 설명 출력 가능
+    /// </summary>
+    /// <param name="title">장면의 이름 (없을 경우 "")</param>
+    /// <param name="description">장면의 설명 (없을 경우 "")</param>
+    public void ShowHeader(string title, string description)
+    {
+        Console.WriteLine("\n========================================================================================================================");
+        Thread.Sleep(500);
+
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        if (title != "") Console.WriteLine($"\n{title}");
+
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        if (description != "") Console.WriteLine($"{description}\n");
+        Console.ResetColor();
+    }
+
+    /// <summary>
+    /// 선택지 스타일을 간편하게 구현
+    /// </summary>
+    /// <param name="index">선택지의 번호</param>
+    /// <param name="name">선택지 이름</param>
+    public void OptionText(int index, string name)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.Write(index);
+        Console.ResetColor();
+        Console.WriteLine($". {name}");
+    }
+    
+    /// <summary>
+    /// 회색으로 표시될 안내 메시지에 사용
+    /// </summary>
+    /// <param name="text">표시할 텍스트</param>
+    public void InfoText(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.WriteLine(text);
+        Console.ResetColor();
+    }
+
+    /// <summary>
+    /// 빨간색으로 표시될 경고 메시지에 사용
+    /// </summary>
+    /// <param name="text">표시할 텍스트</param>
+    public void ErrorText(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        Console.WriteLine(text);
+        Console.ResetColor();
+    }
+
+    /// <summary>
+    /// 인풋 값의 허용 범위를 정하고, 이외의 입력에는 "잘못된 입력" 경고
+    /// (min, max 값도 범위에 포함)
+    /// </summary>
+    /// <param name="min">최소 허용 범위</param>
+    /// <param name="max">최대 허용 범위</param>
+    /// <returns></returns>
+    public int GetInput(int min, int max)
+    {
+        while (true)
+        {
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write(">> ");
+
+            if (int.TryParse(Console.ReadLine(), out int input) && input >= min && input <= max)
+            {
+                Console.ResetColor();
+                return input;
+            }
+
+            ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
+        }
+    }
+
+    /// <summary>
+    /// 콘솔에 출력될 글자가 실제로 몇칸인지 측정
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    public int GetDisplayWidth(string text)
+    {
+        int width = 0;
+        foreach (char c in text)
+        {
+            // 한글은 2칸, 나머지는 1칸
+            width += (c >= 0xAC00 && c <= 0xD7A3) ? 2 : 1;
+        }
+        return width;
+    }
+
+    /// <summary>
+    /// 텍스트의 오른쪽에 공백을 추가해서 특정 길이에 맞춤
+    /// </summary>
+    /// <param name="text">적용할 텍스트</param>
+    /// <param name="totalWidth">총 길이</param>
+    /// <returns></returns>
+    public string FormatString(string text, int totalWidth)
+    {
+        int padding = totalWidth - GetDisplayWidth(text);
+        return text + new string(' ', padding > 0 ? padding : 0);
+    }
+    #endregion
+
+    #region Scene
     // 오프닝
     public void GameStart()
     {
@@ -598,4 +711,5 @@ public class GameManager
             }
         }
     }
+    #endregion
 }
