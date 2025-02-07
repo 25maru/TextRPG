@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 // 박지원님
 public class Dungeon
@@ -17,13 +18,14 @@ public class Dungeon
         Monsters = monsters;
     }
 
+    // TODO: 같은 몬스터의 경우 데미지를 같이 받는 문제 수정
+    // 체력, 골드 반영 안되는 문제
+    // UI 디자인 최적화
+
     private Battle battle;
 
-    public void Enter()
+    public void Enter(Character player)
     {
-        // 배틀 스크립트도 추후에 싱글톤 패턴으로 관리하는게 좋을듯
-        battle = new Battle();
-
         GameManager.Instance.ShowHeader("", "");
 
         Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -35,6 +37,8 @@ public class Dungeon
         Random rand = new Random();
         int monsterCount = rand.Next(MinMonsterCount, MaxMonsterCount + 1);
         List<Monster> selectedMonsters = new List<Monster>();
+
+        battle = new Battle(player, selectedMonsters, new List<Item>());
 
         for (int i = 0; i < monsterCount; i++)
         {
