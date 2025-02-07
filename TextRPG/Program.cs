@@ -660,7 +660,7 @@ class GameManager
             case 2:
             case 3:
             case 4:
-                dungeons[input - 1].Enter();
+                dungeons[input - 1].Enter(player);
                 break;
             case 0:
                 return;
