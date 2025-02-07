@@ -4,34 +4,33 @@ using System.Runtime.Serialization.Formatters;
 // 이상범님
 public class Battle
 {
-    public List<Monster> monsters;
+    public List<Monster> _monsters;
     public Character _character;
+    public List<Item> _rewarditem;
 
     GameManager GM = new GameManager();
-    BattleManager BM = new BattleManager();
 
-    public Battle(Character B_character, List<Monster> B_monsters)
+    public Battle(Character B_character, List<Monster> B_monsters, List<Item> B_rewarditem)
     {
         _character = B_character;
-        monsters = B_monsters;
+        _monsters = B_monsters;
+        _rewarditem = B_rewarditem;
     }
 
     public void StartBattle()
     {
-        Console.WriteLine("BATTLE !!!");
-        while ((!_character.IsDead) && (BM.isAliveMonstersExists(monsters))) // 몬스터 사망처리 우선구현
+        GM.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
+
+        while ((!_character.IsDead) && (isAliveMonstersExists(_monsters))) // 몬스터 사망처리 우선구현
         {
-            BM.PlayerTurn();
-            for (int i = 0; i <= BM.CountAliveMonsters(monsters); i++) //죽은 몬스터 제외처리 필요
+            PlayerTurn();
+            for (int i = 0; i <= CountAliveMonsters(_monsters); i++) //죽은 몬스터 제외처리 필요
             {
-                BM.MonsterTurn(monsters[i], _character);
+                MonsterTurn(_monsters[i], _character);
             }
         }
-        BM.ClearDungeon(); // 둘중 하나 죽어도 일단 클리어로
+        ClearDungeon(); // 둘중 하나 죽어도 일단 클리어로
     }
-}
-public class BattleManager //배틀 유틸리티
-{
     public void InstantiateMonster(List<Monster> _monsters) //몬스터 생성 //위에꺼 쓰고 이건 안쓸듯 ..?
     {
         Console.WriteLine($"The Count Of Monsters ; {_monsters.Count}");
@@ -41,7 +40,7 @@ public class BattleManager //배틀 유틸리티
         }
     }
 
-    public bool isAliveMonstersExists(List<Monster> _monsters) /// 살아있는 몬스터 존재여부
+    public bool isAliveMonstersExists(List<Monster> _monsters) // 살아있는 몬스터 존재여부
     {
         Console.WriteLine($"살아있는 몬스터가 {CountAliveMonsters(_monsters)} 마리 있음.");
 
@@ -84,14 +83,16 @@ public class BattleManager //배틀 유틸리티
 
             case "2":
                 Console.WriteLine("회복 포션을 사용합니다.");
+
                 break;
 
             case "3":
                 Console.WriteLine("강화 포션을 사용합니다.");
+
                 break;
 
             default:
-                Console.WriteLine("올바르지 않은 선택입니다.");
+                Console.WriteLine("올바르지 않은 선택입니다.\n다시 선택해 주세요.");
                 PlayerTurn();
                 break;
         }
@@ -99,8 +100,15 @@ public class BattleManager //배틀 유틸리티
 
     public void MonsterTurn(Monster _TurnMonster, Character _character) //몬스터의 턴
     {
-        Console.WriteLine("MonsterTurnMethod");
-        MonsterAttack(_TurnMonster, _character);
+        if (_character.IsDead == false) //플레이어가 살아있으면
+        {
+            Console.WriteLine("MonsterTurnMethod");
+            MonsterAttack(_TurnMonster, _character);
+        }
+        else //플레이어 사망 시
+        {
+            Console.WriteLine($"{_character.Name}는 허접이래용");
+        }
     }
 
     public void PlayerAttack(Character _character, Monster AMonster, int Damage) //플레이어의 공격
@@ -124,7 +132,7 @@ public class BattleManager //배틀 유틸리티
 
     public void FailedDungeon()
     {
-
+        // 마을 복귀 메서드
     }
 
     public void ClearDungeon() ///던전 종료 메서드 //보윤님 코드 우선
