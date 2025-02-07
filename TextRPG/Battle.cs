@@ -8,7 +8,7 @@ public class Battle
     public Character _character;
     public List<Item> _rewarditem;
 
-    GameManager GM = new GameManager();
+    GameManager GM = GameManager.Instance;
 
     public Battle(Character B_character, List<Monster> B_monsters, List<Item> B_rewarditem)
     {
@@ -53,27 +53,24 @@ public class Battle
         int Alives = _monsters.Count(_monsters => !_monsters.IsDead);
         int DeadBodies = _monsters.Count(_monsters => _monsters.IsDead);
 
-        Console.WriteLine($"{Alives} 만큼 살아있음");
-
         return Alives;
     }
 
     public void PlayerTurn() //플레이어의 턴
     {
-        Console.WriteLine("플레이어 턴 메소드 입니다.");
+        foreach (var monster in _monsters)
+        {
+            Console.WriteLine("플레이어 턴 메소드 입니다.");
+        }
 
-        Console.WriteLine("플레이어 턴 메소드 입니다.");
-        Console.WriteLine("플레이어 턴 메소드 입니다.");
-        Console.WriteLine("플레이어 턴 메소드 입니다.");
+        GM.OptionText(1, "공격");
+        GM.OptionText(2, "회복 포션 사용");
+        GM.OptionText(3, "공격 포션 사용");
 
-        Console.WriteLine("행동을 선택해 주세요!");
-
-        Console.Write(">>>");
-
-        string KeyCode = Console.ReadLine();
+        int KeyCode = GM.GetInput(1, 3);
         switch (KeyCode)
         {
-            case "1":
+            case 1:
                 Console.WriteLine("공격을 가합니다.");
 
                 //int _monsterNum = int.Parse(Console.ReadLine()); //남은 몬스터까지만 번호 보여주기 필요
@@ -81,19 +78,14 @@ public class Battle
 
                 break;
 
-            case "2":
+            case 2:
                 Console.WriteLine("회복 포션을 사용합니다.");
 
                 break;
 
-            case "3":
+            case 3:
                 Console.WriteLine("강화 포션을 사용합니다.");
 
-                break;
-
-            default:
-                Console.WriteLine("올바르지 않은 선택입니다.\n다시 선택해 주세요.");
-                PlayerTurn();
                 break;
         }
     }
@@ -119,7 +111,6 @@ public class Battle
     }
     public void MonsterAttack(Monster _monster, Character _character) //몬스터의 공격 
     {
-        _monster.Hitted(_character.Name, (int)_character.TotalAttack); // TotalAttack은 float  Damage는 int로 되어있어 변환 시킵니다.
         _character.Health -= _monster.Attacking(_character.Name);
         if (_character.Health <= 0)
         {
@@ -133,6 +124,7 @@ public class Battle
     public void FailedDungeon()
     {
         // 마을 복귀 메서드
+        GM.ShowMainMenu();
     }
 
     public void ClearDungeon() ///던전 종료 메서드 //보윤님 코드 우선
