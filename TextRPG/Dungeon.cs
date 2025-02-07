@@ -18,6 +18,10 @@ public class Dungeon
         Monsters = monsters;
     }
 
+    // TODO: 같은 몬스터의 경우 데미지를 같이 받는 문제 수정
+    // 체력, 골드 반영 안되는 문제
+    // UI 디자인 최적화
+
     private Battle battle;
 
     public void Enter(Character player)
