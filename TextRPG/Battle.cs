@@ -70,7 +70,6 @@ public class BattleManager //배틀 유틸리티
     {
         Console.WriteLine("MonsterTurnMethod");
         MonsterAttack(_TurnMonster, _character, _TurnMonster.Attack); //이것도 Private
-
     }
 
     public void PlayerAttack(Character _character, Monster AMonster, int Damage) //플레이어의 공격
@@ -89,12 +88,13 @@ public class BattleManager //배틀 유틸리티
             ExitDungeon();
         }
     }
+
     public void GetDamage(int Damage) //데미지 입히기
     {
         Console.WriteLine($"GetDamageMethod : {Damage} Damage Has Been Attacked!");
     }
 
-    public void ClearDungeon() //던전 종료 메서드
+    public void ClearDungeon() ///던전 종료 메서드 //보윤님 코드 우선
     {
         Console.WriteLine("던전을 클리어 하였습니다.");
         Console.WriteLine("원하시는 보상을 선택하세요.");
