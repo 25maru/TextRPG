@@ -1,9 +1,152 @@
 ﻿using System;
+using System.Runtime.Serialization.Formatters;
 
 // 이상범님
 public class Battle
 {
-    //이상범입니다.
-    //이상범입니다. 010
+    public List<Monster> _monsters;
+    public Character _character;
+    public List<Item> _rewarditem;
 
+    GameManager GM = GameManager.Instance;
+
+    public Battle(Character B_character, List<Monster> B_monsters, List<Item> B_rewarditem)
+    {
+        _character = B_character;
+        _monsters = B_monsters;
+        _rewarditem = B_rewarditem;
+    }
+
+    public void StartBattle()
+    {
+        GM.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
+
+        while ((!_character.IsDead) && (isAliveMonstersExists(_monsters))) // 몬스터 사망처리 우선구현
+        {
+            PlayerTurn();
+            for (int i = 0; i <= CountAliveMonsters(_monsters); i++) //죽은 몬스터 제외처리 필요
+            {
+                MonsterTurn(_monsters[i], _character);
+            }
+        }
+        ClearDungeon(); // 둘중 하나 죽어도 일단 클리어로
+    }
+    public void InstantiateMonster(List<Monster> _monsters) //몬스터 생성 //위에꺼 쓰고 이건 안쓸듯 ..?
+    {
+        Console.WriteLine($"The Count Of Monsters ; {_monsters.Count}");
+        for (int i = 0; _monsters.Count >= i; i++)
+        {
+            Monster _monster = _monsters[i];
+        }
+    }
+
+    public bool isAliveMonstersExists(List<Monster> _monsters) // 살아있는 몬스터 존재여부
+    {
+        Console.WriteLine($"살아있는 몬스터가 {CountAliveMonsters(_monsters)} 마리 있음.");
+
+        return _monsters.Exists(_monsters => !_monsters.IsDead);
+    }
+
+    public int CountAliveMonsters(List<Monster> _monsters) // 살아있는 몬스터 개체 수
+    {
+        int AllMonstersCounts = _monsters.Count();
+        int Alives = _monsters.Count(_monsters => !_monsters.IsDead);
+        int DeadBodies = _monsters.Count(_monsters => _monsters.IsDead);
+
+        return Alives;
+    }
+
+    public void PlayerTurn() //플레이어의 턴
+    {
+        foreach (var monster in _monsters)
+        {
+            Console.WriteLine("플레이어 턴 메소드 입니다.");
+        }
+
+        GM.OptionText(1, "공격");
+        GM.OptionText(2, "회복 포션 사용");
+        GM.OptionText(3, "공격 포션 사용");
+
+        int KeyCode = GM.GetInput(1, 3);
+        switch (KeyCode)
+        {
+            case 1:
+                Console.WriteLine("공격을 가합니다.");
+
+                //int _monsterNum = int.Parse(Console.ReadLine()); //남은 몬스터까지만 번호 보여주기 필요
+                //if(_monsterNum >= )
+
+                break;
+
+            case 2:
+                Console.WriteLine("회복 포션을 사용합니다.");
+
+                break;
+
+            case 3:
+                Console.WriteLine("강화 포션을 사용합니다.");
+
+                break;
+        }
+    }
+
+    public void MonsterTurn(Monster _TurnMonster, Character _character) //몬스터의 턴
+    {
+        if (_character.IsDead == false) //플레이어가 살아있으면
+        {
+            Console.WriteLine("MonsterTurnMethod");
+            MonsterAttack(_TurnMonster, _character);
+        }
+        else //플레이어 사망 시
+        {
+            Console.WriteLine($"{_character.Name}는 허접이래용");
+        }
+    }
+
+    public void PlayerAttack(Character _character, Monster AMonster, int Damage) //플레이어의 공격
+    {
+        Console.WriteLine($"AttackMethod : {Damage} Damage Has Been Attacked !!!");
+        Console.WriteLine($"{AMonster} ");
+        AMonster.Hitted(_character.Name, Damage);
+    }
+    public void MonsterAttack(Monster _monster, Character _character) //몬스터의 공격 
+    {
+        _character.Health -= _monster.Attacking(_character.Name);
+        if (_character.Health <= 0)
+        {
+            _character.IsDead = true;
+            FailedDungeon();
+            Console.WriteLine($"{_character.Name}가 죽었습니다. 마을로 돌아갑니다.");
+            //ExitDungeon();
+        }
+    }
+
+    public void FailedDungeon()
+    {
+        // 마을 복귀 메서드
+        GM.ShowMainMenu();
+    }
+
+    public void ClearDungeon() ///던전 종료 메서드 //보윤님 코드 우선
+    {
+        Console.WriteLine("던전을 클리어 하였습니다.");
+        Console.WriteLine("원하시는 보상을 선택하세요.");
+        Console.WriteLine("1. 500 Gold\n2. 물약\n3. 랜덤상자");
+
+        Console.ReadLine();
+        //GiveReward(); //종료시 보상
+    }
+
+    /*
+    public void GiveReward() //던전 종료 후 보상 메서드
+    {
+        Console.WriteLine("");
+    }
+
+    public void ExitDungeon() //마을로 돌아가기
+    {
+        Console.WriteLine("ExitDungeonMethod");
+        //마을로 돌아가기 추가 예정
+    }
+    */
 }
