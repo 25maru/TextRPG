@@ -1,4 +1,4 @@
-﻿public class InventoryScene : Scene
+﻿public class DungeonScene : Scene
 {
     public override void Open()
     {

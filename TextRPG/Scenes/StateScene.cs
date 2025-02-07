@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TextRPG.Scenes
+﻿public class StateScene : Scene
 {
-    internal class StateScene
+    public override void Open()
     {
+
     }
 }
