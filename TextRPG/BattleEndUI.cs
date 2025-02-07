@@ -19,18 +19,18 @@ public class BattleEndUI
         Console.WriteLine("1. 500 Gold\n2.회복 물약\n3. 랜덤상자");
         Console.ReadLine();
 
-        string input = Console.ReadLine();
-        switch (input)
+
+        switch (GameManager.Instance.GetInput(1, 3))
         {
-            case "1":
+            case 1:
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("500 Gold를 획득하셨습니다.");
                 break;
-            case "2":
+            case 2:
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("회복 물약을 획득하셨습니다.");
                 break;
-            case "3":
+            case 3:
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("랜덤 상자를 획득하셨습니다.");
                 break;
