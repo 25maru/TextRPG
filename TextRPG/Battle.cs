@@ -19,7 +19,7 @@ public class Battle
     public void StartBattle()
     {
         Console.WriteLine("BATTLE !!!");
-        while ((!_character.IsDead) && (BM.isAliveMonstersExists)) // 몬스터 사망처리 우선구현
+        while ((!_character.IsDead) && (BM.isAliveMonstersExists(monsters))) // 몬스터 사망처리 우선구현
         {
             BM.PlayerTurn();
             for (int i = 0; i <= BM.CountAliveMonsters(monsters); i++) //죽은 몬스터 제외처리 필요
