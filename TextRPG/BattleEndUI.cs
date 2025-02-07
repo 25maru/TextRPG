@@ -7,8 +7,6 @@ public class BattleEndUI
     /// <summary>
     /// 전투에 붙여주세요.
     /// </summary>
-    /// <param name="isWin"></param>
-    /// <param name="monsters"></param>
     public static void BattleEnd(bool isWin, List<Monster> monsters)
     {
         if (isWin) GiveReward(monsters);
