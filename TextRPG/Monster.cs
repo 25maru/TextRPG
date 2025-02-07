@@ -22,7 +22,12 @@ public class Monster
         IsDead = false;
     }
 
-    public int Attacking(string name) //몬스터의 공격(텍스트 출력 포함) - name : 플레이어의 이름 - return은 데미지
+    /// <summary>
+    /// 몬스터의 공격(텍스트 출력 포함)
+    /// </summary>
+    /// <param name="name">플레이어의 이름</param>
+    /// <returns>데미지</returns>
+    public int Attacking(string name)
     {
         Console.Write("Lv.");
 
@@ -50,7 +55,12 @@ public class Monster
         return Attack;
     }
 
-    public void Hitted(string name, int damage) //몬스터가 맞는 공격(텍스트 출력 포함) - name : 플레이어 이름, damage : 플레이어 데미지
+    /// <summary>
+    /// 몬스터가 맞는 공격(텍스트 출력 포함)
+    /// </summary>
+    /// <param name="name">플레이어 이름</param>
+    /// <param name="damage">플레이어 데미지</param>
+    public void Hitted(string name, int damage)
     {
         Console.Write($"{name} 의 공격");
 
@@ -125,7 +135,11 @@ public class Monster
         }
     }
 
-    public void ShowMonster(int number) //몬스터 출력 - number : 몇 번째 몬스터인지
+    /// <summary>
+    /// 몬스터 출력
+    /// </summary>
+    /// <param name="number">몇 번째 몬스터인지</param>
+    public void ShowMonster(int number)
     {
         if (IsDead == false)
         {
