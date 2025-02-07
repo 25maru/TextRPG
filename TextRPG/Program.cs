@@ -14,8 +14,40 @@ class Program
 
 class GameManager
 {
+    private static GameManager instance;
+    public static GameManager Instance => instance ??= new GameManager();
+
     private Character player;
     private List<Item> shopItems;
+    private List<Dungeon> dungeons = new List<Dungeon>
+    {
+        // 던전 (이름, 최소 스폰량, 최대 스폰량, 몹 테이블)
+        new Dungeon("초급 던전", 1, 4, new List<Monster>
+        {
+            // 몬스터 (이름, 레벨, 체력, 공격력)
+            new Monster("슬라임", 2, 20, 5),
+            new Monster("고블린", 3, 25, 7),
+            new Monster("늑대", 4, 30, 8)
+        }),
+        new Dungeon("중급 던전", 3, 6, new List<Monster>
+        {
+            new Monster("골렘", 8, 50, 15),
+            new Monster("오우거", 6, 45, 18),
+            new Monster("자이언트", 10, 60, 20)
+        }),
+        new Dungeon("상급 던전", 1, 1, new List<Monster>
+        {
+            new Monster("다크엘프", 20, 100, 30),
+            new Monster("암흑기사", 15, 120, 30),
+            new Monster("타락한 마법사", 25, 80, 40)
+        }),
+        new Dungeon("보스 던전", 1, 1, new List<Monster>
+        {
+            new Monster("고대 드래곤", 20, 200, 60),
+            new Monster("엘드리치", 15, 180, 75),
+            new Monster("마왕", 25, 250, 50)
+        })
+    };
     
     public GameManager()
     { 
@@ -39,27 +71,30 @@ class GameManager
     }
 
     #region Style
+    /// <summary>
+    /// 이전 장면과 구분할 수 있는 선 추가
+    /// 장면의 이름과 설명 출력 가능
+    /// </summary>
+    /// <param name="title">장면의 이름 (없을 경우 "")</param>
+    /// <param name="description">장면의 설명 (없을 경우 "")</param>
     public void ShowHeader(string title, string description)
     {
         Console.WriteLine("\n========================================================================================================================");
         Thread.Sleep(500);
 
         Console.ForegroundColor = ConsoleColor.DarkCyan;
-        Console.WriteLine($"\n{title}");
+        if (title != "") Console.WriteLine($"\n{title}");
 
         Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.WriteLine($"{description}\n");
+        if (description != "") Console.WriteLine($"{description}\n");
         Console.ResetColor();
     }
 
-    public void ShowFooter()
-    {
-        Console.WriteLine("\n원하시는 행동을 입력해주세요.");
-
-        Console.ForegroundColor = ConsoleColor.DarkYellow;
-        Console.Write(">> ");
-    }
-
+    /// <summary>
+    /// 선택지 스타일을 간편하게 구현
+    /// </summary>
+    /// <param name="index">선택지의 번호</param>
+    /// <param name="name">선택지 이름</param>
     public void OptionText(int index, string name)
     {
         Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -68,6 +103,10 @@ class GameManager
         Console.WriteLine($". {name}");
     }
     
+    /// <summary>
+    /// 회색으로 표시될 안내 메시지에 사용
+    /// </summary>
+    /// <param name="text">표시할 텍스트</param>
     public void InfoText(string text)
     {
         Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -75,6 +114,10 @@ class GameManager
         Console.ResetColor();
     }
 
+    /// <summary>
+    /// 빨간색으로 표시될 경고 메시지에 사용
+    /// </summary>
+    /// <param name="text">표시할 텍스트</param>
     public void ErrorText(string text)
     {
         Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -82,6 +125,37 @@ class GameManager
         Console.ResetColor();
     }
 
+    /// <summary>
+    /// 인풋 값의 허용 범위를 정하고, 이외의 입력에는 "잘못된 입력" 경고
+    /// (min, max 값도 범위에 포함)
+    /// </summary>
+    /// <param name="min">최소 허용 범위</param>
+    /// <param name="max">최대 허용 범위</param>
+    /// <returns></returns>
+    public int GetInput(int min, int max)
+    {
+        while (true)
+        {
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write(">> ");
+
+            if (int.TryParse(Console.ReadLine(), out int input) && input >= min && input <= max)
+            {
+                Console.ResetColor();
+                return input;
+            }
+
+            ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
+        }
+    }
+
+    /// <summary>
+    /// 콘솔에 출력될 글자가 실제로 몇칸인지 측정
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
     public int GetDisplayWidth(string text)
     {
         int width = 0;
@@ -93,6 +167,12 @@ class GameManager
         return width;
     }
 
+    /// <summary>
+    /// 텍스트의 오른쪽에 공백을 추가해서 특정 길이에 맞춤
+    /// </summary>
+    /// <param name="text">적용할 텍스트</param>
+    /// <param name="totalWidth">총 길이</param>
+    /// <returns></returns>
     public string FormatString(string text, int totalWidth)
     {
         int padding = totalWidth - GetDisplayWidth(text);
@@ -104,11 +184,12 @@ class GameManager
     // 오프닝
     public void GameStart()
     {
-        Console.WriteLine("  ____  ____   _    ____ _____  _    ");
-        Console.WriteLine(" / ___||  _ \\ / \\  |  _ \\_   _|/ \\   ");
-        Console.WriteLine(" \\___ \\| |_) / _ \\ | |_) || | / _ \\  ");
-        Console.WriteLine("  ___) |  __/ ___ \\|  _ < | |/ ___ \\ ");
-        Console.WriteLine(" |____/|_| /_/   \\_\\_| \\_\\|_/_/   \\_\\\n");
+        Console.WriteLine("   _____ _____ __________                  ");
+        Console.WriteLine("  |__  // ___// ____/ __ \\____ ___  _______");
+        Console.WriteLine("   /_ </ __ \\/___ \\/ / / / __ `/ / / / ___/");
+        Console.WriteLine(" ___/ / /_/ /___/ / /_/ / /_/ / /_/ (__  ) ");
+        Console.WriteLine("/____/\\____/_____/_____/\\__,_/\\__, /____/  ");
+        Console.WriteLine("                             /____/        \n");
 
         Console.WriteLine("스파르타 마을에 오신 것을 환영합니다.");
         Thread.Sleep(1000);
@@ -146,33 +227,27 @@ class GameManager
             OptionText(5, "광산");
             OptionText(6, "휴식");
 
-            ShowFooter();
-
-            string input = Console.ReadLine();
-            Console.ResetColor();
+            int input = GetInput(1, 6);
 
             switch (input)
             {
-                case "1":
+                case 1:
                     ShowStatus();
                     break;
-                case "2":
+                case 2:
                     ShowInventory();
                     break;
-                case "3":
+                case 3:
                     ShowShop();
                     break;
-                case "4":
+                case 4:
                     ShowDungeon();
                     break;
-                case "5":
+                case 5:
                     ShowMine();
                     break;
-                case "6":
+                case 6:
                     ShowRest();
-                    break;
-                default:
-                    ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
                     break;
             }
         }
@@ -187,18 +262,12 @@ class GameManager
 
             player.ShowStatus();
 
-            ShowFooter();
-
-            string input = Console.ReadLine();
-            Console.ResetColor();
+            int input = GetInput(0, 0);
 
             switch (input)
             {
-                case "0":
+                case 0:
                     return;
-                default:
-                    ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
-                    break;
             }
         }
     }
@@ -250,21 +319,15 @@ class GameManager
 
             OptionText(0, "나가기");
 
-            ShowFooter();
-
-            string input = Console.ReadLine();
-            Console.ResetColor();
+            int input = GetInput(0, 1);
 
             switch (input)
             {
-                case "1":
+                case 1:
                     if (player.Inventory.Count > 0) ManageEquipment();
                     break;
-                case "0":
+                case 0:
                     return;
-                default:
-                    ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
-                    break;
             }
         }
     }
@@ -312,17 +375,11 @@ class GameManager
 
             OptionText(0, "나가기");
 
-            ShowFooter();
+            int input = GetInput(0, player.Inventory.Count);
 
-            string input = Console.ReadLine();
-            Console.ResetColor();
-
-            if (input == "0")
-                break;
-
-            if (int.TryParse(input, out int index) && index >= 1 && index <= player.Inventory.Count)
+            if (input >= 1 && input <= player.Inventory.Count)
             {
-                var item = player.Inventory[index - 1];
+                var item = player.Inventory[input - 1];
 
                 if (item.IsEquipped)
                 {
@@ -337,6 +394,8 @@ class GameManager
                 else
                     player.EquipItem(item);
             }
+            else if (input == 0)
+                break;
             else
                 ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
         }
@@ -381,24 +440,18 @@ class GameManager
             OptionText(2, "아이템 판매");
             OptionText(0, "나가기");
 
-            ShowFooter();
-
-            string input = Console.ReadLine();
-            Console.ResetColor();
+            int input = GetInput(0, 2);
 
             switch (input)
             {
-                case "1":
+                case 1:
                     PurchaseItem();
                     break;
-                case "2":
+                case 2:
                     SellItem();
                     break;
-                case "0":
+                case 0:
                     return;
-                default:
-                    ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
-                    break;
             }
         }
     }
@@ -447,22 +500,13 @@ class GameManager
                 Console.ResetColor();
             }
 
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("\n0");
-            Console.ResetColor();
-            Console.WriteLine(". 나가기\n");
+            OptionText(0, "나가기");
 
-            ShowFooter();
+            int input = GetInput(0, shopItems.Count);
 
-            string input = Console.ReadLine();
-            Console.ResetColor();
-
-            if (input == "0")
-                break;
-
-            if (int.TryParse(input, out int index) && index >= 1 && index <= shopItems.Count)
+            if (input >= 1 && input <= shopItems.Count)
             {
-                var item = shopItems[index - 1];
+                var item = shopItems[input - 1];
 
                 if (item.IsPurchased)
                     ErrorText("이미 구매한 아이템입니다.");
@@ -476,8 +520,8 @@ class GameManager
                 else
                     ErrorText("Gold 가 부족합니다.");
             }
-            else
-                ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
+            if (input == 0)
+                break;
         }
     }
 
@@ -535,18 +579,11 @@ class GameManager
 
             OptionText(0, "나가기");
 
-            Console.WriteLine("원하시는 행동을 입력해주세요.");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write(">> ");
-            string input = Console.ReadLine();
-            Console.ResetColor();
+            int input = GetInput(0, player.Inventory.Count);
 
-            if (input == "0")
-                break;
-
-            if (int.TryParse(input, out int index) && index >= 1 && index <= player.Inventory.Count)
+            if (input >= 1 && input <= player.Inventory.Count)
             {
-                var item = player.Inventory[index - 1];
+                var item = player.Inventory[input - 1];
 
                 if (!item.CanSell)
                     ErrorText("판매할 수 없는 아이템입니다.");
@@ -599,49 +636,34 @@ class GameManager
                     }
                 }
             }
-            else
-                ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
+            if (input == 0)
+                break;
         }
     }
 
     // 4. 던전
     public void ShowDungeon()
     {
-        while (true)
+        ShowHeader("던전", "입장할 던전의 난이도를 선택할 수 있습니다.");
+
+        OptionText(1, "초급 던전");
+        OptionText(2, "중급 던전");
+        OptionText(3, "상급 던전");
+        OptionText(4, "보스 던전");
+        OptionText(0, "나가기");
+
+        int input = GetInput(0, 4);
+
+        switch (input)
         {
-            ShowHeader("던전", "이곳에서 입장할 던전을 선택할 수 있습니다.");
-
-            OptionText(1, "초급 던전");
-            OptionText(2, "중급 던전");
-            OptionText(3, "상급 던전");
-            OptionText(4, "지옥 던전");
-            OptionText(0, "나가기");
-
-            ShowFooter();
-
-            string input = Console.ReadLine();
-            Console.ResetColor();
-
-            switch (input)
-            {
-                case "1":
-                    InfoText("'초급 던전'은 업데이트 예정입니다!");
-                    break;
-                case "2":
-                    InfoText("'중급 던전'은 업데이트 예정입니다!");
-                    break;
-                case "3":
-                    InfoText("'상급 던전'은 업데이트 예정입니다!");
-                    break;
-                case "4":
-                    InfoText("'지옥 던전'은 업데이트 예정입니다!");
-                    break;
-                case "0":
-                    return;
-                default:
-                    ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
-                    break;
-            }
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                dungeons[input - 1].Enter();
+                break;
+            case 0:
+                return;
         }
     }
 
@@ -656,8 +678,6 @@ class GameManager
             OptionText(2, "요일 광산");
             OptionText(0, "나가기");
 
-            ShowFooter();
-
             string input = Console.ReadLine();
             Console.ResetColor();
 
@@ -671,9 +691,6 @@ class GameManager
                     break;
                 case "0":
                     return;
-                default:
-                    ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
-                    break;
             }
         }
     }
@@ -696,21 +713,16 @@ class GameManager
             OptionText(1, "휴식하기");
             OptionText(0, "나가기");
 
-            ShowFooter();
-
-            string input = Console.ReadLine();
+            int input = GetInput(0, 1);
             Console.ResetColor();
 
             switch (input)
             {
-                case "1":
+                case 1:
                     player.Rest();
                     break;
-                case "0":
+                case 0:
                     return;
-                default:
-                    ErrorText("잘못된 입력입니다. 다시 시도해주세요.");
-                    break;
             }
         }
     }
