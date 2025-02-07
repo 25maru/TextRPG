@@ -10,6 +10,7 @@ public class Character
     public float BaseDefense { get; }
     public int Health { get; set; }
     public int MaxHealth { get; }
+    public bool IsDead { get; set; }
 
     public int Gold { get; set; }
     public List<Item> Inventory { get; set; }
@@ -126,10 +127,7 @@ public class Character
         Console.WriteLine($"체력   :  {Health}/{MaxHealth}");
         Console.WriteLine($"Gold   :  {Gold} G\n");
 
-        Console.ForegroundColor = ConsoleColor.DarkCyan;
-        Console.Write("0");
-        Console.ResetColor();
-        Console.WriteLine(". 나가기");
+        GameManager.Instance.OptionText(0, "나가기");
     }
 
     // 휴식
@@ -153,16 +151,8 @@ public class Character
             Console.WriteLine("\n휴식을 완료했습니다. 체력이 모두 회복되었습니다.");
         }
         else if (Gold < 500)
-        {
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("Gold 가 부족합니다.");
-            Console.ResetColor();
-        }
+            GameManager.Instance.ErrorText("Gold 가 부족합니다.");
         else
-        {
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("이미 최대 체력입니다.");
-            Console.ResetColor();
-        }
+            GameManager.Instance.ErrorText("이미 최대 체력입니다.");
     }
 }
