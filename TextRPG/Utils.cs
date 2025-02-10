@@ -36,6 +36,43 @@ namespace Tool
             Console.WriteLine($". {name}");
         }
 
+        public static void MonsterText(int level, string name, float attack, int health, bool isDead)
+        {
+            name = FormatString(name, 14);
+
+            if (!isDead)
+            {
+                Console.Write("Lv.");
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write(level);
+                Console.ResetColor();
+
+                if (level <= 9)
+                    Console.Write($"  {name}(공격력 ");
+                else
+                    Console.Write($" {name}(공격력 ");
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write(attack);
+                Console.ResetColor();
+
+                Console.Write($" / 체력 ");
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write(health);
+                Console.ResetColor();
+
+                Console.WriteLine(")");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write($"Lv.{level} {name} (공격력 {attack} / 체력 {health})");
+                Console.ResetColor();
+            }
+        }
+
         /// <summary>
         /// 회색으로 표시될 안내 메시지에 사용
         /// </summary>

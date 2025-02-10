@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 ﻿using System;
 using System.Runtime.Serialization.Formatters;
+=======
+﻿using System.Numerics;
+using Tool;
+>>>>>>> Stashed changes
 
 // 이상범님
 public class Battle
@@ -81,12 +86,19 @@ public class Battle
                 }
         Console.WriteLine();
 
+<<<<<<< Updated upstream
         GM.OptionText(1, "공격");
         GM.OptionText(2, "회복 포션 사용");
         GM.OptionText(3, "공격 포션 사용");
 
         int KeyCode = GM.GetInput(1, 3);
         switch (KeyCode)
+=======
+        Utils.OptionText(1, "공격");
+        Utils.OptionText(2, "회복 포션 사용");
+
+        switch (Utils.GetInput(1, 2))
+>>>>>>> Stashed changes
         {
             case 1:
                 Console.WriteLine("=================================");
@@ -112,17 +124,8 @@ public class Battle
 
             case 2:
                 Console.WriteLine("회복 포션을 사용합니다.");
-                ClearDungeon();
-                break;
-
-
-            case 3:
-                Console.WriteLine("강화 포션을 사용합니다.");
-                _character.Health = 0;
-                break;
-
-            case 4:
-                Console.WriteLine("4번 항목입니다.");
+                int playerHealth = GameManager.Instance.player.Health;
+                playerHealth = Math.Min(playerHealth + 50, 100);
                 break;
         }
     }

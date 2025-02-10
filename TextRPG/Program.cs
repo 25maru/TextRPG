@@ -18,6 +18,7 @@ public class GameManager
     private static GameManager instance;
     public static GameManager Instance => instance ??= new GameManager();
 
+<<<<<<< Updated upstream
     private Character player;
     private List<Item> shopItems;
     private List<Dungeon> dungeons = new List<Dungeon>
@@ -49,6 +50,12 @@ public class GameManager
             new Monster("마왕", 25, 250, 50)
         })
     };
+=======
+    public Character player;
+
+    public List<Item> shopItems;
+    public List<Dungeon> dungeons;
+>>>>>>> Stashed changes
     
     public GameManager()
     { 
@@ -185,14 +192,14 @@ public class GameManager
     // 오프닝
     public void GameStart()
     {
-        // Console.WriteLine("   _____ _____ __________                  ");
-        // Console.WriteLine("  |__  // ___// ____/ __ \\____ ___  _______");
-        // Console.WriteLine("   /_ </ __ \\/___ \\/ / / / __ `/ / / / ___/");
-        // Console.WriteLine(" ___/ / /_/ /___/ / /_/ / /_/ / /_/ (__  ) ");
-        // Console.WriteLine("/____/\\____/_____/_____/\\__\\_/\\__, /____/  ");
-        // Console.WriteLine("                             /____/        \n");
+        Console.WriteLine("   _____ _____ __________                  ");
+        Console.WriteLine("  |__  // ___// ____/ __ \\___ ____  _______");
+        Console.WriteLine("   /_ </ __ \\/___ \\/ / / / __` / / / / ___/");
+        Console.WriteLine(" ___/ / /_/ /___/ / /_/ / /_/ / /_/ /__ \\  ");
+        Console.WriteLine("/____/\\____/_____/_____/\\___,_\\__, /____/  ");
+        Console.WriteLine("                             /____/        \n");
 
-        Console.WriteLine("   ____     __     ___       _             _  _         \r\n  |__ /    / /    | __|   __| |   __ _    | || |   ___  \r\n   |_ \\   / _ \\   |__ \\  / _` |  / _` |    \\_, |  (_-<  \r\n  |___/   \\___/   |___/  \\__,_|  \\__,_|   _|__/   /__/_ \r\n_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_| \"\"\"\"|_|\"\"\"\"\"|\r\n\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'");
+        // Console.WriteLine("   ____     __     ___       _             _  _         \r\n  |__ /    / /    | __|   __| |   __ _    | || |   ___  \r\n   |_ \\   / _ \\   |__ \\  / _` |  / _` |    \\_, |  (_-<  \r\n  |___/   \\___/   |___/  \\__,_|  \\__,_|   _|__/   /__/_ \r\n_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|\r\n\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'");
 
         Console.WriteLine("\n스파르타 마을에 오신 것을 환영합니다.");
         Thread.Sleep(1000);
@@ -206,7 +213,8 @@ public class GameManager
         Console.ResetColor();
 
         GetStarterItem();
-        ShowMainMenu();
+        // ShowMainMenu();
+        SceneManager.Instance.mainScene.Open();
     }
     
     private void GetStarterItem()
@@ -635,7 +643,7 @@ public class GameManager
     // 4. 던전
     public void ShowDungeon()
     {
-        Utils.ShowHeader("던전", "입장할 던전의 난이도를 선택할 수 있습니다.");
+        Utils.ShowHeader("던전 입구", "입장할 던전의 난이도를 선택할 수 있습니다.");
 
         Utils.OptionText(1, "초급 던전");
         Utils.OptionText(2, "중급 던전");
@@ -688,9 +696,6 @@ public class GameManager
     {
         while (true)
         {
-            // 체력 회복 테스트를 위한 임시 코드
-            player.Health -= 40;
-
             Utils.ShowHeader("휴식", "500 G 를 내면 체력을 회복할 수 있습니다.");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
