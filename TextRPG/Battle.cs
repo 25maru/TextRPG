@@ -1,5 +1,5 @@
-﻿using System;
-using System.Runtime.Serialization.Formatters;
+﻿using System.Numerics;
+using Tool;
 
 // 이상범님
 public class Battle
@@ -8,7 +8,6 @@ public class Battle
     public Character _character;
     public List<Item> _rewarditem;
 
-    GameManager GM = GameManager.Instance;
     /// <summary>
     /// 캐릭터, 몬스터 리스트, 리워드 리스트
     /// </summary>
@@ -21,7 +20,7 @@ public class Battle
 
     public void StartBattle()
     {
-        GM.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
+        Utils.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
 
         while ((!_character.IsDead) && (isAliveMonstersExists(_monsters))) // 몬스터 사망처리
         {
@@ -72,27 +71,27 @@ public class Battle
         }
         Console.WriteLine();
 
-        GM.OptionText(1, "공격");
-        GM.OptionText(2, "회복 포션 사용");
-        GM.OptionText(3, "공격 포션 사용");
-        GM.OptionText(4, "던전 클리어");
-        GM.OptionText(5, "던전 실패");
+        Utils.OptionText(1, "공격");
+        Utils.OptionText(2, "회복 포션 사용");
+        Utils.OptionText(3, "공격 포션 사용");
+        Utils.OptionText(4, "던전 클리어");
+        Utils.OptionText(5, "던전 실패");
 
-        int KeyCode = GM.GetInput(1, 6);
-        switch (KeyCode)
+        switch (Utils.GetInput(1, 5))
         {
             case 1:
-                GM.ShowHeader("공격을 가합니다", "몬스터를 선택해주세요.");
+                Utils.ShowHeader("공격을 가합니다", "몬스터를 선택해주세요.");
 
                 for (int i = 0; i < _monsters.Count; i++) //몬스터 현재 상태 보여주기
                 {
                     _monsters[i].ShowMonster(i + 1);
                 }
-                int _TargetMonster = GM.GetInput(0, _monsters.Count + 1);
+                
+                int _TargetMonster = Utils.GetInput(0, _monsters.Count + 1);
 
                 if (_monsters[_TargetMonster - 1].IsDead)
                 {
-                    GM.ErrorText($"선택하신 {_monsters[_TargetMonster - 1].Name}은 선택할 수 없는 대상입니다.\n유효한 대상을 선택해주세요.\n");
+                    Utils.ErrorText($"선택하신 {_monsters[_TargetMonster - 1].Name}은 선택할 수 없는 대상입니다.\n유효한 대상을 선택해주세요.\n");
                     PlayerTurn();
                 }
                 else
@@ -112,21 +111,17 @@ public class Battle
 
             case 3:
                 Console.WriteLine("강화 포션을 사용합니다.");
-                GM.ErrorText("미구현 항목입니다.");
+                Utils.ErrorText("미구현 항목입니다.");
                 break;
 
             case 4:
-                GM.ShowHeader("던전 클리어를 선택하셨습니다.", "던전 성공 메서드를 호출합니다.");
+                Utils.ShowHeader("던전 클리어를 선택하셨습니다.", "던전 성공 메서드를 호출합니다.");
                 ClearDungeon();
                 break;
             case 5:
-                GM.ShowHeader("던전 실패를 선택하셨습니다", "던전 실패 메서드를 호출합니다.");
+                Utils.ShowHeader("던전 실패를 선택하셨습니다", "던전 실패 메서드를 호출합니다.");
                 FailedDungeon();
                 break;
-            default:
-                Console.WriteLine("어케 띄웠음 이걸");
-                break;
-
         }
     }
 
@@ -160,12 +155,14 @@ public class Battle
     public void FailedDungeon() //던전 실패
     {
         BattleEndUI.BattleEnd(false, _monsters);
-        GM.ShowMainMenu();
+        
+        // 마을 복귀 메서드
+        SceneManager.Instance.mainScene.Open();
     }
 
     public void ClearDungeon() //던전 클리어 //보윤님 코드 연결
     {
         BattleEndUI.BattleEnd(true, _monsters);
-        GM.ShowMainMenu();
+        SceneManager.Instance.mainScene.Open();
     }
 }

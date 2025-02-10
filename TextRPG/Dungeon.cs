@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using Tool;
 
 // 박지원님
 public class Dungeon
@@ -26,13 +25,7 @@ public class Dungeon
 
     public void Enter(Character player)
     {
-        GameManager.Instance.ShowHeader("", "");
-
-        Console.ForegroundColor = ConsoleColor.DarkCyan;
-        Console.Write($"\n{Name}");
-        Console.ResetColor();
-
-        Console.WriteLine("에 입장합니다.\n");
+        Utils.ShowHeader("던전 내부", $"{Name}에 입장했습니다.");
 
         Random rand = new Random();
         int monsterCount = rand.Next(MinMonsterCount, MaxMonsterCount + 1);
@@ -42,17 +35,63 @@ public class Dungeon
 
         for (int i = 0; i < monsterCount; i++)
         {
-            selectedMonsters.Add(Monsters[rand.Next(Monsters.Count)]);
+            Monster original = Monsters[rand.Next(Monsters.Count)];
+            Monster clonedMonster = new Monster(original.Name, original.Level, original.Health, original.Attack); // 개별 객체 복사
+            selectedMonsters.Add(clonedMonster);
         }
 
-        Console.WriteLine("출현한 몬스터:");
+        Console.WriteLine("[몬스터 정보]");
         foreach (var monster in selectedMonsters)
         {
-            Console.WriteLine($"- {monster.Name} (공격력: {monster.Attack}, 체력: {monster.Health})");
+            Utils.MonsterText(monster.Level, monster.Name, monster.Attack, monster.Health, monster.IsDead);
         }
 
         Console.WriteLine();
 
+        Console.WriteLine("[내 정보]");
+        Console.Write("Lv.");
+
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.Write(player.Level);
+        Console.ResetColor();
+
+        Console.Write($"  {player.Name} ");
+
+        string playerClass = Utils.FormatString($"({player.Class})", 13 - Utils.GetDisplayWidth(player.Name));
+
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.Write(playerClass);
+        Console.ResetColor();
+
+        Console.Write($"(공격력 ");
+
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.Write(player.TotalAttack);
+        Console.ResetColor();
+
+        Console.Write($" / 체력 ");
+
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.Write(player.Health);
+        Console.ResetColor();
+
+        Console.WriteLine(")");
+
+        Console.WriteLine();
+
+        Utils.OptionText(1, "전투 시작");
+        Utils.OptionText(0, "포기하기");
+
+        switch (Utils.GetInput(0, 1))
+        {
+            case 1:
+                break;
+            case 0:
+                SceneManager.Instance.mainScene.Open();
+                break;
+        }
+
+        battle = new Battle(player, selectedMonsters, new List<Item>());
         battle.StartBattle();
     }
 
