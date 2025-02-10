@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tool;
 
-namespace TextRPG.Scenes
+public class MainScene : Scene
 {
-<<<<<<< Updated upstream
-    internal class MainScene
-    {
-=======
     private Character player;
 
     public override void Open()
@@ -46,6 +38,5 @@ namespace TextRPG.Scenes
                 SceneManager.Instance.loungeScene.Open();
                 break;
         }
->>>>>>> Stashed changes
     }
 }

@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-﻿using System;
-using System.Collections.Generic;
-=======
-﻿using System.Reflection.Emit;
-using System.Xml.Linq;
 using Tool;
->>>>>>> Stashed changes
 
 // 박지원님
 public class Dungeon
@@ -24,7 +17,6 @@ public class Dungeon
         Monsters = monsters;
     }
 
-<<<<<<< Updated upstream
     // TODO: 같은 몬스터의 경우 데미지를 같이 받는 문제 수정
     // 체력, 골드 반영 안되는 문제
     // UI 디자인 최적화
@@ -33,18 +25,7 @@ public class Dungeon
 
     public void Enter(Character player)
     {
-        GameManager.Instance.ShowHeader("", "");
-
-        Console.ForegroundColor = ConsoleColor.DarkCyan;
-        Console.Write($"\n{Name}");
-        Console.ResetColor();
-
-        Console.WriteLine("에 입장합니다.\n");
-=======
-    public void Enter(Character player)
-    {
         Utils.ShowHeader("던전 내부", $"{Name}에 입장했습니다.");
->>>>>>> Stashed changes
 
         Random rand = new Random();
         int monsterCount = rand.Next(MinMonsterCount, MaxMonsterCount + 1);
@@ -67,8 +48,6 @@ public class Dungeon
 
         Console.WriteLine();
 
-<<<<<<< Updated upstream
-=======
         Console.WriteLine("[내 정보]");
         Console.Write("Lv.");
 
@@ -113,7 +92,6 @@ public class Dungeon
         }
 
         battle = new Battle(player, selectedMonsters, new List<Item>());
->>>>>>> Stashed changes
         battle.StartBattle();
     }
 

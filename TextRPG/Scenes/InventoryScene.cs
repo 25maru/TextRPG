@@ -1,16 +1,3 @@
-<<<<<<< Updated upstream
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TextRPG.Scenes
-{
-    internal class InventoryScene
-    {
-=======
-﻿using System.Numerics;
 using Tool;
 
 public class InventoryScene : Scene
@@ -137,6 +124,5 @@ public class InventoryScene : Scene
             else if (input == 0)
                 break;
         }
->>>>>>> Stashed changes
     }
 }

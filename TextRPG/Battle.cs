@@ -1,10 +1,5 @@
-<<<<<<< Updated upstream
-﻿using System;
-using System.Runtime.Serialization.Formatters;
-=======
 ﻿using System.Numerics;
 using Tool;
->>>>>>> Stashed changes
 
 // 이상범님
 public class Battle
@@ -12,8 +7,6 @@ public class Battle
     public List<Monster> _monsters;
     public Character _character;
     public List<Item> _rewarditem;
-
-    GameManager GM = GameManager.Instance;
 
     /// <summary>
     /// 캐릭터, 몬스터 리스트, 리워드 리스트
@@ -27,7 +20,7 @@ public class Battle
 
     public void StartBattle()
     {
-        GM.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
+        Utils.ShowHeader("전투 시작 !!!", "몬스터와의 전투를 시작합니다.");
 
         while ((!_character.IsDead) && (isAliveMonstersExists(_monsters))) // 몬스터 사망처리
         { //생각해보니 살아있는 만큼이 아니라 살아있는애만 ...
@@ -86,19 +79,10 @@ public class Battle
                 }
         Console.WriteLine();
 
-<<<<<<< Updated upstream
-        GM.OptionText(1, "공격");
-        GM.OptionText(2, "회복 포션 사용");
-        GM.OptionText(3, "공격 포션 사용");
-
-        int KeyCode = GM.GetInput(1, 3);
-        switch (KeyCode)
-=======
         Utils.OptionText(1, "공격");
         Utils.OptionText(2, "회복 포션 사용");
 
         switch (Utils.GetInput(1, 2))
->>>>>>> Stashed changes
         {
             case 1:
                 Console.WriteLine("=================================");
@@ -112,7 +96,7 @@ public class Battle
                     Console.Write(i+1);
                     _monsters[i].ShowMonster(i + 1);
                 }
-                int _TargetMonster = GM.GetInput(0, _monsters.Count+1);
+                int _TargetMonster = Utils.GetInput(0, _monsters.Count+1);
                 PlayerAttack(_character, _monsters[_TargetMonster - 1], (int)_character.TotalAttack);
 
                 //_monsters[_TargetMonster - 1].Hitted(_character.Name,(int)_character.TotalAttack);
@@ -164,13 +148,13 @@ public class Battle
     {
         BattleEndUI.BattleEnd(false, _monsters);
         // 마을 복귀 메서드
-        GM.ShowMainMenu();
+        SceneManager.Instance.mainScene.Open();
     }
 
     public void ClearDungeon() ///던전 종료 메서드 //보윤님 코드 우선
     {
         BattleEndUI.BattleEnd(true, _monsters);
-        GM.ShowMainMenu();
+        SceneManager.Instance.mainScene.Open();
 
         //Console.WriteLine("던전을 클리어 하였습니다.");
         //Console.WriteLine("원하시는 보상을 선택하세요.");

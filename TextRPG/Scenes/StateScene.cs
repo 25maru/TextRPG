@@ -1,16 +1,3 @@
-<<<<<<< Updated upstream
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TextRPG.Scenes
-{
-    internal class StateScene
-    {
-=======
-﻿using System.Numerics;
 using Tool;
 
 public class StateScene : Scene
@@ -34,6 +21,5 @@ public class StateScene : Scene
                     break;
             }
         }
->>>>>>> Stashed changes
     }
 }

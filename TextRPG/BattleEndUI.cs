@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.Design;
+﻿using Tool;
 
 // 최보윤님
 public class BattleEndUI
@@ -21,7 +20,7 @@ public class BattleEndUI
         Utils.OptionText(2, "회복 물약 x2");
         Utils.OptionText(3, "랜덤박스");;
 
-        switch (GameManager.Instance.GetInput(1, 3))
+        switch (Utils.GetInput(1, 3))
         {
             case 1:
                 GameManager.Instance.player.Gold += 500;
@@ -41,10 +40,6 @@ public class BattleEndUI
                 break;
         }
 
-       /* for (int i = 0; i < monsters.Count; i++)
-        {
-            Console.WriteLine($"처치한 몬스터:{monsters[i]}");
-        }*/
         foreach (Monster monster in monsters) 
         {
             Utils.InfoText($"처치한 몬스터:{monster.Name}");
