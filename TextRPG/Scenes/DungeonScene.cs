@@ -3,8 +3,8 @@ using Tool;
 
 public class DungeonScene : Scene
 {
-    private Character player;
-    private List<Dungeon> dungeons;
+    private Character? player;
+    private List<Dungeon>? dungeons;
 
     public override void Open()
     {

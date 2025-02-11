@@ -3,7 +3,7 @@ using Tool;
 
 public class LoungeScene : Scene
 {
-    private Character player;
+    private Character? player;
 
     public override void Open()
     {
@@ -27,7 +27,8 @@ public class LoungeScene : Scene
                     player.Rest();
                     break;
                 case 0:
-                    return;
+                    SceneManager.Instance.mainScene.Open();
+                    break;
             }
         }
     }

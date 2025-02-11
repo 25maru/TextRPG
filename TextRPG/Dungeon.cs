@@ -1,5 +1,13 @@
 using Tool;
 
+public enum Reward
+{
+    Tier1 = 1,
+    Tier2,
+    Tier3,
+    Tier4
+}
+
 // 박지원님
 public class Dungeon
 {
@@ -7,31 +15,32 @@ public class Dungeon
     public int Time { get; set; }
     public int MinMonsterCount { get; }
     public int MaxMonsterCount { get; }
+    public Reward RewardTier { get; }
     public List<Monster> Monsters { get; set; }
 
-    public Dungeon(string name, int min, int max, List<Monster> monsters)
+    public Dungeon(string name, int min, int max, Reward reward, List<Monster> monsters)
     {
         Name = name;
         MinMonsterCount = min;
         MaxMonsterCount = max;
+        RewardTier = reward;
         Monsters = monsters;
     }
 
-    // TODO: 같은 몬스터의 경우 데미지를 같이 받는 문제 수정
-    // 체력, 골드 반영 안되는 문제
-    // UI 디자인 최적화
-
-    private Battle battle;
+    private Battle? battle;
 
     public void Enter(Character player)
     {
         Utils.ShowHeader("던전 내부", $"{Name}에 입장했습니다.");
 
+        Console.WriteLine("[내 정보]");
+        Utils.PlayerText(player);
+
+        Console.WriteLine();
+
         Random rand = new Random();
         int monsterCount = rand.Next(MinMonsterCount, MaxMonsterCount + 1);
         List<Monster> selectedMonsters = new List<Monster>();
-
-        battle = new Battle(player, selectedMonsters, new List<Item>());
 
         for (int i = 0; i < monsterCount; i++)
         {
@@ -48,37 +57,6 @@ public class Dungeon
 
         Console.WriteLine();
 
-        Console.WriteLine("[내 정보]");
-        Console.Write("Lv.");
-
-        Console.ForegroundColor = ConsoleColor.DarkGreen;
-        Console.Write(player.Level);
-        Console.ResetColor();
-
-        Console.Write($"  {player.Name} ");
-
-        string playerClass = Utils.FormatString($"({player.Class})", 13 - Utils.GetDisplayWidth(player.Name));
-
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.Write(playerClass);
-        Console.ResetColor();
-
-        Console.Write($"(공격력 ");
-
-        Console.ForegroundColor = ConsoleColor.DarkGreen;
-        Console.Write(player.TotalAttack);
-        Console.ResetColor();
-
-        Console.Write($" / 체력 ");
-
-        Console.ForegroundColor = ConsoleColor.DarkGreen;
-        Console.Write(player.Health);
-        Console.ResetColor();
-
-        Console.WriteLine(")");
-
-        Console.WriteLine();
-
         Utils.OptionText(1, "전투 시작");
         Utils.OptionText(0, "포기하기");
 
@@ -91,10 +69,11 @@ public class Dungeon
                 break;
         }
 
-        battle = new Battle(player, selectedMonsters, new List<Item>());
+        battle = new Battle(player, selectedMonsters, new List<Item>(), RewardTier);
         battle.StartBattle();
     }
 
+    // 아직 사용처 없음
     public void SetTimer(int startTime)
     {
         Time = startTime;

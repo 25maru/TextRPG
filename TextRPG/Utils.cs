@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace Tool
 {
@@ -10,12 +11,12 @@ namespace Tool
         /// </summary>
         /// <param name="title">장면의 이름 (없을 경우 "")</param>
         /// <param name="description">장면의 설명 (없을 경우 "")</param>
-        public static void ShowHeader(string title, string description)
+        public static void ShowHeader(string title, string description, ConsoleColor color = ConsoleColor.DarkCyan)
         {
             Console.WriteLine("\n========================================================================================================================");
             Thread.Sleep(500);
 
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = color;
             if (title != "") Console.WriteLine($"\n{title}");
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -28,14 +29,55 @@ namespace Tool
         /// </summary>
         /// <param name="index">선택지의 번호</param>
         /// <param name="name">선택지 이름</param>
-        public static void OptionText(int index, string name)
+        public static void OptionText(int index, string name, ConsoleColor color = ConsoleColor.DarkCyan)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = color;
             Console.Write(index);
             Console.ResetColor();
             Console.WriteLine($". {name}");
         }
 
+        /// <summary>
+        /// 플레이어 스타일을 간편하게 구현
+        /// </summary>
+        public static void PlayerText(Character player)
+        {
+            Console.Write("Lv.");
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write(player.Level);
+            Console.ResetColor();
+
+            Console.Write($"  {player.Name} ");
+            string playerClass = Utils.FormatString($"({player.Class})", 13 - Utils.GetDisplayWidth(player.Name));
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write(playerClass);
+            Console.ResetColor();
+
+            Console.Write($"(공격력 ");
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write(player.TotalAttack);
+            Console.ResetColor();
+
+            Console.Write($" / 체력 ");
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write(player.Health);
+            Console.ResetColor();
+
+            Console.WriteLine(")");
+        }
+
+        /// <summary>
+        /// 몬스터 스타일을 간편하게 구현
+        /// </summary>
+        /// <param name="level">몬스터 레벨</param>
+        /// <param name="name">몬스터 이름</param>
+        /// <param name="attack">몬스터 공격력</param>
+        /// <param name="health">몬스터 체력</param>
+        /// <param name="isDead">몬스터 생사 여부</param>
         public static void MonsterText(int level, string name, float attack, int health, bool isDead)
         {
             name = FormatString(name, 14);

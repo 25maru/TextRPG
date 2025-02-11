@@ -3,8 +3,8 @@ using Tool;
 
 public class StoreScene : Scene
 {
-    private Character player;
-    private List<Item> shopItems;
+    private Character? player;
+    private List<Item>? shopItems;
 
     public override void Open()
     {
@@ -23,14 +23,14 @@ public class StoreScene : Scene
             Console.WriteLine("[아이템 목록]");
 
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
-            int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+            int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
             string longestDescription = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Description)).First().Description;
 
             for (int i = 0; i < shopItems.Count; i++)
             {
                 var item = shopItems[i];
                 string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
-                string bonus = item.AttackBonus > 0 ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
+                string bonus = item.AttackBonus > 0 ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
                 bonus = Utils.FormatString(bonus, 8 + longestBonus);
                 string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
                 string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
@@ -62,8 +62,14 @@ public class StoreScene : Scene
         }
     }
 
-    public void PurchaseItem()
+    /// <summary>
+    /// 아이템 구매 화면
+    /// </summary>
+    private void PurchaseItem()
     {
+        player = GameManager.Instance.player;
+        shopItems = GameManager.Instance.shopItems;
+
         while (true)
         {
             Utils.ShowHeader("상점 - 아이템 구매", "필요한 아이템을 얻을 수 있는 상점입니다.");
@@ -76,7 +82,7 @@ public class StoreScene : Scene
             Console.WriteLine("[아이템 목록]");
 
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
-            int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+            int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
             string longestDescription = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Description)).First().Description;
 
             for (int i = 0; i < shopItems.Count; i++)
@@ -84,7 +90,7 @@ public class StoreScene : Scene
                 var item = shopItems[i];
 
                 string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
-                string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
+                string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
                 bonus = Utils.FormatString(bonus, 8 + longestBonus);
                 string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
                 string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
@@ -118,7 +124,7 @@ public class StoreScene : Scene
                 else if (player.Gold >= item.Price)
                 {
                     player.Gold -= item.Price;
-                    item.IsPurchased = true;
+                    if (item.Type != ItemType.Potion) item.IsPurchased = true;
                     player.Inventory.Add(item);
                     Console.WriteLine("구매를 완료했습니다.");
                 }
@@ -130,8 +136,14 @@ public class StoreScene : Scene
         }
     }
 
-    public void SellItem()
+    /// <summary>
+    /// 아이템 판매 화면
+    /// </summary>
+    private void SellItem()
     {
+        player = GameManager.Instance.player;
+        shopItems = GameManager.Instance.shopItems;
+
         while (true)
         {
             Utils.ShowHeader("상점 - 아이템 판매", "필요한 아이템을 얻을 수 있는 상점입니다.");
@@ -148,7 +160,7 @@ public class StoreScene : Scene
             else
             {
                 string longestItem = player.Inventory.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
-                int longestBonus = player.Inventory.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.DefenseBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+                int longestBonus = player.Inventory.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
                 string longestDescription = player.Inventory.OrderByDescending(item => Utils.GetDisplayWidth(item.Description)).First().Description;
 
                 for (int i = 0; i < player.Inventory.Count; i++)
@@ -157,7 +169,7 @@ public class StoreScene : Scene
                     int sellPrice = (int)(item.Price * 0.85);
 
                     string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
-                    string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"방어력 +{item.DefenseBonus}";
+                    string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
                     bonus = Utils.FormatString(bonus, 8 + longestBonus);
                     string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
                     string price = item.CanSell ? $"{sellPrice} G" : "판매불가";

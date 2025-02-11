@@ -2,12 +2,8 @@
 
 public class MainScene : Scene
 {
-    private Character player;
-
     public override void Open()
     {
-        player = GameManager.Instance.player;
-
         Utils.ShowHeader("마을", "이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
 
         Utils.OptionText(1, "상태 보기");

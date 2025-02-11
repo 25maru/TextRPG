@@ -2,7 +2,7 @@ using Tool;
 
 public class StateScene : Scene
 {
-    private Character player;
+    private Character? player;
 
     public override void Open()
     {
