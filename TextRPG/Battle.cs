@@ -9,7 +9,6 @@ public class Battle
     public List<Item> _rewarditem;
 
     GameManager GM = GameManager.Instance;
-
     /// <summary>
     /// 캐릭터, 몬스터 리스트, 리워드 리스트
     /// </summary>
