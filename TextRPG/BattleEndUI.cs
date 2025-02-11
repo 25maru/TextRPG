@@ -23,8 +23,7 @@ public class BattleEndUI
     /// <param name="monsters"></param>
     private static void GiveReward(Character player, List<Monster> monsters, Reward reward)
     {
-        Utils.ShowHeader("전투 결과", "");
-        Utils.ShowHeader("승리!!", "원하는 보상을 선택해서 수령할 수 있습니다.", ConsoleColor.DarkGreen);
+        Utils.ShowHeader("전투 결과 - 승리!!", "원하는 보상을 선택해서 수령할 수 있습니다.", ConsoleColor.DarkGreen);
 
         int gold = reward switch
         {
@@ -78,8 +77,7 @@ public class BattleEndUI
     }
     private static void Lose(Character player)
     {
-        Utils.ShowHeader("전투 결과", "");
-        Utils.ShowHeader("패배", "더욱 강해진 후 도전해주세요", ConsoleColor.DarkRed);
+        Utils.ShowHeader("전투 결과 - 패배", "더욱 강해진 후 도전해주세요", ConsoleColor.DarkRed);
 
         Utils.PlayerText(player);
     }

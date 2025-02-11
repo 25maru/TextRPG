@@ -28,7 +28,7 @@ public class MainScene : Scene
                 SceneManager.Instance.dungeonScene.Open();
                 break;
             case 5:
-                // 미구현
+                SceneManager.Instance.mineScene.Open();
                 break;
             case 6:
                 SceneManager.Instance.loungeScene.Open();

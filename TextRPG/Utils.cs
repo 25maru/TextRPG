@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Numerics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Tool
 {
     public static class Utils
     {
+        private static List<string> previousContent = new List<string>();
+
         /// <summary>
         /// 이전 장면과 구분할 수 있는 선 추가
         /// 장면의 이름과 설명 출력 가능
@@ -110,7 +113,7 @@ namespace Tool
             else
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.Write($"Lv.{level} {name} (공격력 {attack} / 체력 {health})");
+                Console.WriteLine($"Lv.{level} {name} (공격력 {attack} / 체력 {health})");
                 Console.ResetColor();
             }
         }
@@ -189,6 +192,26 @@ namespace Tool
         {
             int padding = totalWidth - GetDisplayWidth(text);
             return text + new string(' ', padding > 0 ? padding : 0);
+        }
+
+        public static void FadePreviousContent()
+        {
+            // 기존 출력 내용 회색으로 변경
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            foreach (var line in previousContent)
+            {
+                Console.WriteLine(line);
+            }
+            Console.ResetColor();
+
+            // 기존 내용 저장 후 초기화
+            previousContent.Clear();
+        }
+
+        public static void StoreContent(string content)
+        {
+            previousContent.Add(content);
         }
     }
 }

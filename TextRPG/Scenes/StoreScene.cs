@@ -20,20 +20,20 @@ public class StoreScene : Scene
             Console.WriteLine($"{player.Gold} G\n");
             Console.ResetColor();
 
-            Console.WriteLine("[아이템 목록]");
+            // Console.WriteLine("[아이템 목록]");
 
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
             int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
             string longestDescription = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Description)).First().Description;
             int longestPrice = shopItems.Select(item => item.Price.ToString()).OrderByDescending(price => price.Length).First().Length;
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("(장비)");
-            Console.ResetColor();
-            Console.Write(new string('-', -3 + Utils.GetDisplayWidth(longestItem)) + "+");
-            Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-            Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
-            Console.WriteLine(new string('-', 3 + longestPrice));
+            // Console.ForegroundColor = ConsoleColor.DarkGray;
+            // Console.Write("+");
+            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestItem)) + "+");
+            // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
+            // Console.WriteLine(new string('-', 4 + longestPrice) + "+");
+            // Console.ResetColor();
 
             for (int i = 0; i < shopItems.Count; i++)
             {
@@ -46,21 +46,42 @@ public class StoreScene : Scene
                     bonus = Utils.FormatString(bonus, 8 + longestBonus);
                     string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
                     string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
+                    price = Utils.FormatString(price, 2 + longestPrice);
+
+                    ConsoleColor itemColor = ConsoleColor.Gray;
 
                     if (item.IsPurchased)
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"- {name} | {bonus} | {description} | {price}");
+                        itemColor = ConsoleColor.DarkGray;
+
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write("- ");
+                    Console.ForegroundColor = itemColor;
+                    Console.Write(name);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" | ");
+                    Console.ForegroundColor = itemColor;
+                    Console.Write(bonus);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" | ");
+                    Console.ForegroundColor = itemColor;
+                    Console.Write(description);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" | ");
+                    Console.ForegroundColor = itemColor;
+                    Console.WriteLine(price);
                     Console.ResetColor();
                 }
             }
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("(소비)");
-            Console.ResetColor();
-            Console.Write(new string('-', -3 + Utils.GetDisplayWidth(longestItem)) + "+");
-            Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-            Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
-            Console.WriteLine(new string('-', 3 + longestPrice));
+            // Console.ForegroundColor = ConsoleColor.DarkGray;
+            // Console.Write("+");
+            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestItem)) + "+");
+            // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
+            // Console.WriteLine(new string('-', 4 + longestPrice) + "+");
+            // Console.ResetColor();
+
+            Console.WriteLine();
 
             for (int i = 0; i < shopItems.Count; i++)
             {
@@ -73,18 +94,40 @@ public class StoreScene : Scene
                     bonus = Utils.FormatString(bonus, 8 + longestBonus);
                     string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
                     string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
+                    price = Utils.FormatString(price, 2 + longestPrice);
+
+                    ConsoleColor itemColor = ConsoleColor.Gray;
 
                     if (item.IsPurchased)
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"- {name} | {bonus} | {description} | {price}");
+                        itemColor = ConsoleColor.DarkGray;
+
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write("- ");
+                    Console.ForegroundColor = itemColor;
+                    Console.Write(name);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" | ");
+                    Console.ForegroundColor = itemColor;
+                    Console.Write(bonus);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" | ");
+                    Console.ForegroundColor = itemColor;
+                    // Console.Write(description);
+                    // Console.ForegroundColor = ConsoleColor.DarkGray;
+                    // Console.Write(" | ");
+                    // Console.ForegroundColor = itemColor;
+                    Console.WriteLine(price);
                     Console.ResetColor();
                 }
             }
 
-            Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
-            Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-            Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
-            Console.WriteLine(new string('-', 3 + longestPrice));
+            // Console.ForegroundColor = ConsoleColor.DarkGray;
+            // Console.Write("+");
+            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestItem)) + "+");
+            // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
+            // Console.WriteLine(new string('-', 4 + longestPrice) + "+");
+            // Console.ResetColor();
 
             Console.WriteLine();
 
@@ -131,7 +174,7 @@ public class StoreScene : Scene
             Console.WriteLine($"{player.Gold} G\n");
             Console.ResetColor();
 
-            Console.WriteLine("[아이템 목록]");
+            // Console.WriteLine("[아이템 목록]");
 
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
             int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;

@@ -14,6 +14,16 @@ public class StartAnim
         "\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'  "
     };
 
+    private static string[] title = new string[]
+    {
+        "   _____ _____ _____ ____                                 ",
+        "  |__  // ___// ___// __ \\___ ____  _______               ",
+        "   /_ </ __ \\/___ \\/ / / / __` / / / / ___/               ",
+        " ___/ / /_/ /___/ / /_/ / /_/ / /_/ /__ \\                 ",
+        "/____/\\____/_____/_____/\\___,_\\__, /____/                 ",
+        "                             /____/                       "
+    };
+
     /// <summary>
     /// 기차 등장 애니메이션 플레이
     /// </summary>
@@ -52,7 +62,7 @@ public class StartAnim
                     if (visibleLength > 0)
                     {
                         int posX = Math.Max(0, (int)x);
-                        Console.SetCursorPosition(posX, i + yOffset);
+                        Console.SetCursorPosition(posX, i + yOffset);   
 
                         // 색상을 글자별로 적용하기 위해 한 글자씩 출력
                         for (int j = 0; j < visibleLength; j++)
@@ -60,16 +70,18 @@ public class StartAnim
                             if (i < 4)
                             {
                                 if (j < engineLength * 2)
-                                    Console.ForegroundColor = ConsoleColor.Cyan; // 기관차 색상 (파란색)
+                                    Console.ForegroundColor = ConsoleColor.Magenta;
+                                else if (j < engineLength * 3)
+                                    Console.ForegroundColor = ConsoleColor.Cyan;
                                 else
-                                    Console.ForegroundColor = ConsoleColor.Yellow; // 화물칸 색상 (노란색)
+                                    Console.ForegroundColor = ConsoleColor.White;
                             }
                             else
                             {
-                                if (j < engineLength * 2)
-                                    Console.ForegroundColor = ConsoleColor.DarkCyan; // 기관차 색상 (파란색)
-                                else
-                                    Console.ForegroundColor = ConsoleColor.DarkYellow; // 화물칸 색상 (노란색)
+                                Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                                if (j % 8 == 0)
+                                    Console.ForegroundColor = ConsoleColor.White;
                             }
 
                             Console.Write(train[i][startPos + j]); // 한 글자씩 출력
@@ -90,7 +102,92 @@ public class StartAnim
             Thread.Sleep(10); // 고정된 짧은 간격으로 업데이트 (부드러움 유지)
         }
 
-        Console.CursorVisible = true; // 애니메이션 종료 후 커서 다시 표시
+        // 가로 방향 페이드 효과 + 트랜지션 (네모 기호) 적용
+        int maxSteps = Math.Max(screenWidth, title.Length);
+
+        for (int step = 0; step <= maxSteps; step++)
+        {
+            for (int i = 0; i < title.Length; i++)
+            {
+                int posX = step - i; // 대각선 이동 효과 적용 (↘)
+                if (posX >= 0 && posX < title[i].Length - 15) // 화면 범위 내에서만 출력
+                {
+                    Console.SetCursorPosition(posX, i + 1);
+                    Console.Write("▒"); // 트랜지션 효과 (페이드 아웃)
+                }
+
+                // ✨ 네모가 지나간 자리에서 새로운 텍스트가 등장
+                if (posX > 0 && posX <= train[i].Length)
+                {
+                    Console.SetCursorPosition(posX - 1, i + 1);
+
+                    if (i == 0)
+                    {
+                        if (posX < 15)
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                        else if (posX < 21)
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                        else
+                            Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (i == 1)
+                    {
+                        if (posX < 15)
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                        else if (posX < 21)
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                        else
+                            Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (i == 2)
+                    {
+                        if (posX < 14)
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                        else if (posX < 20)
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                        else
+                            Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (i == 3)
+                    {
+                        if (posX < 14)
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                        else if (posX < 20)
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                        else
+                            Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (i == 4)
+                    {
+                        if (posX < 13)
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                        else if (posX < 19)
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                        else
+                            Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (i == 5)
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+
+                    Console.Write(title[i][posX - 1]);
+                }
+
+                Console.ResetColor(); // 색상 초기화
+            }
+
+            Thread.Sleep(10);
+        }
+
+        for (int i = 0; i < title.Length; i++)
+        {
+            Console.SetCursorPosition(screenWidth - 1, i);
+            Console.Write(" "); // 마지막 네모를 공백으로 덮어 마무리
+        }
+
+        Console.CursorVisible = true;
+
         Console.SetCursorPosition(0, train.Length + 2); // 커서를 아래로 이동
     }
 }

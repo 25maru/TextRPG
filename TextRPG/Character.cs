@@ -284,7 +284,7 @@ public class Character
             Console.Write($"'{box.Name}'");
             Console.ResetColor();
 
-            Console.Write($"를 사용하여 플레이어의 상태가 다음과 같이 변경되었습니다.");
+            Console.WriteLine($"를 사용하여 플레이어의 상태가 다음과 같이 변경되었습니다.");
 
             Random rand = new Random();
             float randAttack = (rand.Next(1, 25) - 10) * 0.1f * TotalAttack;
@@ -301,15 +301,15 @@ public class Character
             Console.Write($"체력:   {TotalHealth} -> ");
             BaseHealth += (int)randHealth;
             if (BaseHealth <= 0) BaseHealth = 1f;
-            if (randAttack > 0) Console.ForegroundColor = ConsoleColor.DarkGreen;
-            else if (randAttack < 0) Console.ForegroundColor = ConsoleColor.DarkRed;
+            if (randHealth > 0) Console.ForegroundColor = ConsoleColor.DarkGreen;
+            else if (randHealth < 0) Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine(TotalHealth);
             Console.ResetColor();
 
             Console.Write($"Gold:   {Gold} -> ");
             Gold += (int)randGold;
-            if (randAttack > 0) Console.ForegroundColor = ConsoleColor.DarkGreen;
-            else if (randAttack < 0) Console.ForegroundColor = ConsoleColor.DarkRed;
+            if (randGold > 0) Console.ForegroundColor = ConsoleColor.DarkGreen;
+            else if (randGold < 0) Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine(Gold);
             Console.ResetColor();
         }

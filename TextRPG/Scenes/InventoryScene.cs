@@ -26,12 +26,12 @@ public class InventoryScene : Scene
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("(장비)");
-                Console.ResetColor();
-                Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
-                Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-                Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
+                // Console.ForegroundColor = ConsoleColor.Cyan;
+                // Console.Write("(장비)");
+                // Console.ResetColor();
+                // Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
+                // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+                // Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
 
                 foreach (var item in player.Inventory)
                 {
@@ -55,12 +55,14 @@ public class InventoryScene : Scene
                     }
                 }
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("(소비)");
-                Console.ResetColor();
-                Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
-                Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-                Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
+                // Console.ForegroundColor = ConsoleColor.Cyan;
+                // Console.Write("(소비)");
+                // Console.ResetColor();
+                // Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
+                // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+                // Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
+
+                Console.WriteLine();
 
                 foreach (var item in player.Inventory)
                 {
@@ -72,14 +74,14 @@ public class InventoryScene : Scene
 
                         Console.Write("- ");
 
-                        Console.WriteLine($"    {name} | {bonus} | {item.Description}");
-                        // Console.WriteLine($"    {name} | {bonus}");
+                        // Console.WriteLine($"    {name} | {bonus} | {item.Description}");
+                        Console.WriteLine($"    {name} | {bonus}");
                     }
                 }
 
-                Console.Write(new string('-', 6 + Utils.GetDisplayWidth(longestItem) + 1) + "+");
-                Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-                Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
+                // Console.Write(new string('-', 6 + Utils.GetDisplayWidth(longestItem) + 1) + "+");
+                // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+                // Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
             }
             Console.WriteLine();
 

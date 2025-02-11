@@ -8,6 +8,7 @@
     public InventoryScene inventoryScene;
     public StoreScene storeScene;
     public DungeonScene dungeonScene;
+    public MineScene mineScene;
     public LoungeScene loungeScene;
 
     private SceneManager()
@@ -17,6 +18,7 @@
         inventoryScene = new InventoryScene();
         storeScene = new StoreScene();
         dungeonScene = new DungeonScene();
+        mineScene = new MineScene();
         loungeScene = new LoungeScene();
     }
 }

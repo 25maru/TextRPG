@@ -74,15 +74,18 @@ public class GameManager
     /// </summary>
     public void GameStart()
     {
+        // 로고 애니메이션 재생
+        StartAnim.Play();
+
+        // Console.Clear();
+           
+        // Console.WriteLine("                                           ");
         // Console.WriteLine("   _____ _____ __________                  ");
         // Console.WriteLine("  |__  // ___// ____/ __ \\___ ____  _______");
         // Console.WriteLine("   /_ </ __ \\/___ \\/ / / / __` / / / / ___/");
         // Console.WriteLine(" ___/ / /_/ /___/ / /_/ / /_/ / /_/ /__ \\  ");
         // Console.WriteLine("/____/\\____/_____/_____/\\___,_\\__, /____/  ");
         // Console.WriteLine("                             /____/        \n");
-
-        // 로고 애니메이션 재생
-        StartAnim.Play();
 
         Console.WriteLine("\n스파르타 마을에 오신 것을 환영합니다.");
         Thread.Sleep(1000);

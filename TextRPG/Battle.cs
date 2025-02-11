@@ -37,6 +37,8 @@ public class Battle
                 }
             }
         }
+
+        ClearDungeon();
     }
 
     public bool IsAliveMonstersExists(List<Monster> monsters) // 살아있는 몬스터 존재여부
@@ -99,12 +101,12 @@ public class Battle
                 break;
 
             case 2:
-                Utils.ShowHeader("회복", "사용할 회복 포션을 선택해주새요");
+                Utils.ShowHeader("회복", "사용할 회복 포션을 선택해주세요");
                 player.UsePotion("Heal");
                 break;
 
             case 3:
-                Utils.ShowHeader("강화", "사용할 강화 포션을 선택해주새요");
+                Utils.ShowHeader("강화", "사용할 강화 포션을 선택해주세요");
                 Console.WriteLine("강화 포션을 사용합니다.");
                 player.UsePotion("Power");
                 break;
