@@ -1,55 +1,84 @@
-﻿using System;
-using System.ComponentModel.Design;
+﻿using Tool;
 
 // 최보윤님
 public class BattleEndUI
 {
     /// <summary>
-    /// 전투에 붙여주세요.
+    /// 전투 결과를 받아서 결과 화면에 반영하는 메서드로 이동
     /// </summary>
-    public static void BattleEnd(bool isWin, List<Monster> monsters)
+    /// <param name="isWin">승리 여부</param>
+    /// <param name="monsters">처치한 몬스터</param>
+    public static void BattleEnd(bool isWin, Character player, List<Monster> monsters, Reward reward)
     {
-        if (isWin) GiveReward(monsters);
-        else Lose();
+        player.IsBattle = false;
+        player.ResetPotionBuffs();
+
+        if (isWin) GiveReward(player, monsters, reward);
+        else Lose(player);
     }
-    private static void GiveReward(List<Monster> monsters)
+
+    /// <summary>
+    /// 전투 승리 시 보상 지급
+    /// </summary>
+    /// <param name="monsters"></param>
+    private static void GiveReward(Character player, List<Monster> monsters, Reward reward)
     {
-        Console.WriteLine("전투를 승리하였습니다");
-        Console.WriteLine("원하시는 보상을 선택하세요.");
-        Console.WriteLine("1. 500 Gold\n2.회복 물약\n3. 랜덤상자");
-        Console.ReadLine();
+        Utils.ShowHeader("전투 결과 - 승리!!", "원하는 보상을 선택해서 수령할 수 있습니다.", ConsoleColor.DarkGreen);
 
+        int gold = reward switch
+        {
+            Reward.Tier1 => 500,
+            Reward.Tier2 => 2500,
+            Reward.Tier3 => 12500,
+            Reward.Tier4 => 1000000,
+            _ => 0
+        };
 
-        switch (GameManager.Instance.GetInput(1, 3))
+        Item potion = reward switch
+        {
+            Reward.Tier1 => new Item("하급 회복 포션", "", ItemType.Potion, healthBonus: 25f, price: 100),
+            Reward.Tier2 => new Item("상급 회복 포션", "", ItemType.Potion, healthBonus: 50f, price: 250),
+            Reward.Tier3 => new Item("최상급 회복 포션", "", ItemType.Potion, healthBonus: 150f, price: 1000),
+            Reward.Tier4 => new Item("초월 회복 포션", "", ItemType.Potion, healthBonus: 10000f, price: 10000),
+            _ => new Item("오류 아이템", "", ItemType.Potion)
+        };
+
+        Utils.OptionText(1, $"{gold} G");
+        Utils.OptionText(2, $"{potion.Name} x2");
+        Utils.OptionText(3, "랜덤박스");
+
+        switch (Utils.GetInput(1, 3))
         {
             case 1:
+                player.Gold += gold;
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("500 Gold를 획득하셨습니다.");
+                Console.WriteLine($"{gold} G 를 획득하셨습니다.");
+                Console.ResetColor();
                 break;
             case 2:
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("회복 물약을 획득하셨습니다.");
+                player.Inventory.Add(potion);
+                player.Inventory.Add(potion);
+                Console.ResetColor();
                 break;
             case 3:
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("랜덤 상자를 획득하셨습니다.");
-                break;
-            default:
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("잘못된 입력입니다.");
+                Console.WriteLine("랜덤박스를 획득하셨습니다.");
+                player.Inventory.Add(new Item($"랜덤박스 (T{(int)reward})", "무엇이 들어있을지 알 수 없습니다.", ItemType.Potion) { CanSell = false });
+                Console.ResetColor();
                 break;
         }
-       /* for (int i = 0; i < monsters.Count; i++)
-        {
-            Console.WriteLine($"처치한 몬스터:{monsters[i]}");
-        }*/
+
         foreach (Monster monster in monsters) 
         {
-            Console.WriteLine($"처치한 몬스터:{monster.Name}");
+            Utils.InfoText($"처치한 몬스터:{monster.Name}");
         }
     }
-    private static void Lose()
+    private static void Lose(Character player)
     {
-        Console.WriteLine("전투에서 패배하셨습니다. 게임오버");
+        Utils.ShowHeader("전투 결과 - 패배", "더욱 강해진 후 도전해주세요", ConsoleColor.DarkRed);
+
+        Utils.PlayerText(player);
     }
 }

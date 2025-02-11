@@ -1,14 +1,24 @@
-﻿using System;
-
-public class Scene
+﻿public class SceneManager
 {
-    
-}
+    private static SceneManager instance;
+    public static SceneManager Instance = instance ??= new SceneManager();
 
-public class SceneManager
-{
-    private static GameManager instance;
-    public static GameManager Instance => instance ??= new GameManager();
+    public MainScene mainScene;
+    public StateScene stateScene;
+    public InventoryScene inventoryScene;
+    public StoreScene storeScene;
+    public DungeonScene dungeonScene;
+    public MineScene mineScene;
+    public LoungeScene loungeScene;
 
-    // public Dictionary<string name, >
+    private SceneManager()
+    {
+        mainScene = new MainScene();
+        stateScene = new StateScene();
+        inventoryScene = new InventoryScene();
+        storeScene = new StoreScene();
+        dungeonScene = new DungeonScene();
+        mineScene = new MineScene();
+        loungeScene = new LoungeScene();
+    }
 }

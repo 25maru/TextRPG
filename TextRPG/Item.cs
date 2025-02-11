@@ -5,7 +5,8 @@ public enum ItemType
     Weapon,
     Shield,
     Helmet,
-    Armor
+    Armor,
+    Potion
 }
 
 public class Item
@@ -15,20 +16,20 @@ public class Item
 
     public ItemType Type { get; set; }
     public float AttackBonus { get; set; }
-    public float DefenseBonus { get; set; }
+    public float HealthBonus { get; set; }
 
     public int Price { get; set; }
     public bool IsEquipped { get; set; }
     public bool IsPurchased { get; set; }
     public bool CanSell { get; set; }
 
-    public Item(string name, string description, ItemType type, float attackBonus = 0, float defenseBonus = 0, int price = 0)
+    public Item(string name, string description, ItemType type, float attackBonus = 0, float healthBonus = 0, int price = 0)
     {
         Name = name;
         Description = description;
         Type = type;
         AttackBonus = attackBonus;
-        DefenseBonus = defenseBonus;
+        HealthBonus = healthBonus;
         Price = price;
         IsEquipped = false;
         IsPurchased = false;
