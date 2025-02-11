@@ -24,7 +24,7 @@ public class Battle
 
         while ((!player.IsDead) && (IsAliveMonstersExists(monsters))) // 몬스터 사망처리
         {
-            PlayerTurn();
+            PlayerTurn(); //플레이어 선 턴
             for (int i = 0; i < monsters.Count; i++) //몬스터 만큼 턴을 씀 
             {
                 if (monsters[i].IsDead) //번호 몬스터가 죽어있으면
@@ -33,17 +33,15 @@ public class Battle
                 }
                 else //살아있으면
                 {
-                    MonsterTurn(monsters[i], player);
+                    MonsterTurn(monsters[i], player); //몬스터 턴
                 }
             }
         }
-
         ClearDungeon();
     }
 
     public bool IsAliveMonstersExists(List<Monster> monsters) // 살아있는 몬스터 존재여부
     {
-        // Console.WriteLine($"남은 몬스터: {CountAliveMonsters(monsters)}/{monsters.Count}.");
         return monsters.Exists(monsters => !monsters.IsDead);
     }
 
@@ -160,7 +158,7 @@ public class Battle
         SceneManager.Instance.mainScene.Open();
     }
 
-    public void ClearDungeon() //던전 클리어 //보윤님 코드 연결
+    public void ClearDungeon() //던전 클리어
     {
         BattleEndUI.BattleEnd(true, player, monsters, reward);
         SceneManager.Instance.mainScene.Open();
