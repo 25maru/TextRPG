@@ -85,9 +85,13 @@ public class InventoryScene : Scene
 
             if (player.Inventory.Where(item => item.Type != ItemType.Potion).ToList().Count > 0)
                 Utils.OptionText(1, "장착 관리");
+            else
+                Utils.InfoText("1. 장착 관리");
 
             if (player.Inventory.Where(item => item.Type == ItemType.Potion).ToList().Count > 0)
                 Utils.OptionText(2, "소비 아이템 관리");
+            else
+                Utils.InfoText("2. 소비 아이템 관리");
 
             Utils.OptionText(0, "나가기");
 
@@ -96,10 +100,14 @@ public class InventoryScene : Scene
                 case 1:
                     if (player.Inventory.Where(item => item.Type != ItemType.Potion).ToList().Count > 0)
                         ManageEquipment();
+                    else
+                        Utils.ErrorText("장착할 수 있는 아이템이 없습니다.");
                     break;
                 case 2:
                     if (player.Inventory.Where(item => item.Type == ItemType.Potion).ToList().Count > 0)
                         ManageUseItems();
+                    else
+                        Utils.ErrorText("사용할 수 있는 아이템이 없습니다.");
                     break;
                 case 0:
                     SceneManager.Instance.mainScene.Open();

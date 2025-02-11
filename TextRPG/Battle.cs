@@ -6,7 +6,6 @@ public class Battle
 {
     public List<Monster> monsters;
     public Character player;
-    public List<Item> rewarditem;
     public Reward reward;
 
     /// <summary>
@@ -16,7 +15,6 @@ public class Battle
     {
         this.player = player;
         this.monsters = monsters;
-        this.rewarditem = rewarditem;
         this.reward = reward;
     }
 
@@ -38,15 +36,6 @@ public class Battle
                     MonsterTurn(monsters[i], player);
                 }
             }
-        }
-        ClearDungeon(); // 둘중 하나 죽어도 일단 클리어로
-    }
-    public void InstantiateMonster(List<Monster> monsters) //몬스터 생성 //위에꺼 쓰고 이건 안쓸듯 ..?
-    {
-        Console.WriteLine($"The Count Of Monsters ; {monsters.Count}");
-        for (int i = 0; monsters.Count >= i; i++)
-        {
-            Monster monster = monsters[i];
         }
     }
 

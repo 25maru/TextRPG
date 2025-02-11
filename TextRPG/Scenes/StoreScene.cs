@@ -25,35 +25,87 @@ public class StoreScene : Scene
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
             int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
             string longestDescription = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Description)).First().Description;
+            int longestPrice = shopItems.Select(item => item.Price.ToString()).OrderByDescending(price => price.Length).First().Length;
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("(장비)");
+            Console.ResetColor();
+            Console.Write(new string('-', -3 + Utils.GetDisplayWidth(longestItem)) + "+");
+            Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+            Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
+            Console.WriteLine(new string('-', 3 + longestPrice));
 
             for (int i = 0; i < shopItems.Count; i++)
             {
                 var item = shopItems[i];
-                string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
-                string bonus = item.AttackBonus > 0 ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
-                bonus = Utils.FormatString(bonus, 8 + longestBonus);
-                string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
-                string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
 
-                if (item.IsPurchased)
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine($"- {name} | {bonus} | {description} | {price}");
-                Console.ResetColor();
+                if (item.Type != ItemType.Potion)
+                {
+                    string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
+                    string bonus = item.AttackBonus > 0 ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
+                    bonus = Utils.FormatString(bonus, 8 + longestBonus);
+                    string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
+                    string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
+
+                    if (item.IsPurchased)
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"- {name} | {bonus} | {description} | {price}");
+                    Console.ResetColor();
+                }
             }
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("(소비)");
+            Console.ResetColor();
+            Console.Write(new string('-', -3 + Utils.GetDisplayWidth(longestItem)) + "+");
+            Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+            Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
+            Console.WriteLine(new string('-', 3 + longestPrice));
+
+            for (int i = 0; i < shopItems.Count; i++)
+            {
+                var item = shopItems[i];
+
+                if (item.Type == ItemType.Potion)
+                {
+                    string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
+                    string bonus = item.AttackBonus > 0 ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
+                    bonus = Utils.FormatString(bonus, 8 + longestBonus);
+                    string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
+                    string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
+
+                    if (item.IsPurchased)
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"- {name} | {bonus} | {description} | {price}");
+                    Console.ResetColor();
+                }
+            }
+
+            Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
+            Console.Write(new string('-', 9 + longestBonus + 1) + "+");
+            Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
+            Console.WriteLine(new string('-', 3 + longestPrice));
 
             Console.WriteLine();
 
-            Utils.OptionText(1, "아이템 구매");
-            Utils.OptionText(2, "아이템 판매");
+            Utils.OptionText(1, "장비 아이템 구매");
+            Utils.OptionText(2, "소비 아이템 구매");
+            Utils.OptionText(3, "아이템 판매");
             Utils.OptionText(0, "나가기");
 
-            switch (Utils.GetInput(0, 2))
+            switch (Utils.GetInput(0, 3))
             {
                 case 1:
-                    PurchaseItem();
+                    if (shopItems.Where(item => item.Type != ItemType.Potion).ToList().Count > 0)
+                        PurchaseItem();
                     break;
                 case 2:
-                    SellItem();
+                    if (shopItems.Where(item => item.Type == ItemType.Potion).ToList().Count > 0)
+                        PurchaseUseItem();
+                    break;
+                case 3:
+                    if (player.Inventory.Count > 0)
+                        SellItem();
                     break;
                 case 0:
                     SceneManager.Instance.mainScene.Open();
@@ -63,7 +115,7 @@ public class StoreScene : Scene
     }
 
     /// <summary>
-    /// 아이템 구매 화면
+    /// 장비 아이템 구매 화면
     /// </summary>
     private void PurchaseItem()
     {
@@ -72,7 +124,7 @@ public class StoreScene : Scene
 
         while (true)
         {
-            Utils.ShowHeader("상점 - 아이템 구매", "필요한 아이템을 얻을 수 있는 상점입니다.");
+            Utils.ShowHeader("상점 - 장비 아이템 구매", "필요한 아이템을 얻을 수 있는 상점입니다.");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("[보유 골드]");
@@ -89,35 +141,124 @@ public class StoreScene : Scene
             {
                 var item = shopItems[i];
 
-                string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
-                string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
-                bonus = Utils.FormatString(bonus, 8 + longestBonus);
-                string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
-                string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
+                if (item.Type != ItemType.Potion)
+                {
+                    string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
+                    string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
+                    bonus = Utils.FormatString(bonus, 8 + longestBonus);
+                    string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
+                    string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
 
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write($"{i + 1}");
+                    if (item.IsPurchased)
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    else
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write($"{i + 1}");
 
-                Console.ResetColor();
+                    Console.ResetColor();
 
-                if (i < 9)
-                    Console.Write(".  ");
-                else
-                    Console.Write(". ");
+                    if (i < 9)
+                        Console.Write(".  ");
+                    else
+                        Console.Write(". ");
 
-                if (item.IsPurchased)
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine($"{name} | {bonus} | {description} | {price}");
-                Console.ResetColor();
+                    if (item.IsPurchased)
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"{name} | {bonus} | {description} | {price}");
+                    Console.ResetColor();
+                }
             }
 
             Utils.OptionText(0, "나가기");
 
-            int input = Utils.GetInput(0, shopItems.Count);
+            // 포션을 제외한 아이템 리스트 생성
+            var filteredInventory = shopItems.Where(item => item.Type != ItemType.Potion).ToList();
 
-            if (input >= 1 && input <= shopItems.Count)
+            int input = Utils.GetInput(0, filteredInventory.Count);
+
+            if (input >= 1 && input <= filteredInventory.Count)
             {
-                var item = shopItems[input - 1];
+                var item = filteredInventory[input - 1];
+
+                if (item.IsPurchased)
+                    Utils.ErrorText("이미 구매한 아이템입니다.");
+                else if (player.Gold >= item.Price)
+                {
+                    player.Gold -= item.Price;
+                    if (item.Type != ItemType.Potion) item.IsPurchased = true;
+                    player.Inventory.Add(item);
+                    Console.WriteLine("구매를 완료했습니다.");
+                }
+                else
+                    Utils.ErrorText("Gold 가 부족합니다.");
+            }
+            else if (input == 0)
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 소비 아이템 구메 화면
+    /// </summary>
+    private void PurchaseUseItem()
+    {
+        player = GameManager.Instance.player;
+        shopItems = GameManager.Instance.shopItems;
+
+        while (true)
+        {
+            Utils.ShowHeader("상점 - 소비 아이템 구매", "필요한 아이템을 얻을 수 있는 상점입니다.");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("[보유 골드]");
+            Console.WriteLine($"{player.Gold} G\n");
+            Console.ResetColor();
+
+            Console.WriteLine("[아이템 목록]");
+
+            string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
+            int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
+            string longestDescription = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Description)).First().Description;
+
+            for (int i = 0; i < shopItems.Count; i++)
+            {
+                var item = shopItems[i];
+
+                if (item.Type == ItemType.Potion)
+                {
+                    string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
+                    string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
+                    bonus = Utils.FormatString(bonus, 8 + longestBonus);
+                    string description = Utils.FormatString($"{item.Description}", Utils.GetDisplayWidth(longestDescription));
+                    string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
+
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write($"{i + 1}");
+
+                    Console.ResetColor();
+
+                    if (item.IsPurchased)
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    if (i < 9)
+                        Console.Write(".  ");
+                    else
+                        Console.Write(". ");
+
+                    Console.WriteLine($"{name} | {bonus} | {description} | {price}");
+                    Console.ResetColor();
+                }
+            }
+
+            Utils.OptionText(0, "나가기");
+
+            // 포션을 제외한 아이템 리스트 생성
+            var filteredInventory = shopItems.Where(item => item.Type == ItemType.Potion).ToList();
+
+            int input = Utils.GetInput(0, filteredInventory.Count);
+
+            if (input >= 1 && input <= filteredInventory.Count)
+            {
+                var item = filteredInventory[input - 1];
 
                 if (item.IsPurchased)
                     Utils.ErrorText("이미 구매한 아이템입니다.");
