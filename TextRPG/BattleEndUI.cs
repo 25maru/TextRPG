@@ -39,10 +39,7 @@ public class BattleEndUI
                 Console.WriteLine("잘못된 입력입니다.");
                 break;
         }
-       /* for (int i = 0; i < monsters.Count; i++)
-        {
-            Console.WriteLine($"처치한 몬스터:{monsters[i]}");
-        }*/
+
         foreach (Monster monster in monsters) 
         {
             Console.WriteLine($"처치한 몬스터:{monster.Name}");
