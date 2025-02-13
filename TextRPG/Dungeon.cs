@@ -65,7 +65,7 @@ public class Dungeon
             case 1:
                 break;
             case 0:
-                SceneManager.Instance.mainScene.Open();
+                SceneManager.Instance.dungeonScene.Open();
                 break;
         }
 

@@ -22,9 +22,11 @@ public class MineScene : Scene
         {
             case 1:
                 Utils.ErrorText("입장 레벨 조건을 충족하지 못했습니다. (Lv. 5)");
+                SceneManager.Instance.mainScene.Open();
                 break;
             case 2:
                 Utils.ErrorText("입장 레벨 조건을 충족하지 못했습니다. (Lv. 25)");
+                SceneManager.Instance.mainScene.Open();
                 break;
             case 0:
                 SceneManager.Instance.mainScene.Open();

@@ -78,7 +78,7 @@ public class Monster
         Console.Write($"'{Name}'을(를) 맞췄습니다.  [데미지: ");
 
         Console.ForegroundColor = ConsoleColor.DarkGreen;
-        Console.Write($"{damage}");
+        Console.Write(damage);
 
         Console.ResetColor();
         Console.WriteLine("]");
@@ -93,7 +93,7 @@ public class Monster
         Console.Write($"{Level} ");
 
         Console.ResetColor();
-        Console.WriteLine($"{Name}");
+        Console.WriteLine(Name);
 
         if (Health > damage)
         {

@@ -18,6 +18,7 @@ public class StateScene : Scene
             {
                 case 0:
                     SceneManager.Instance.mainScene.Open();
+                    Utils.SaveAndClearConsole();
                     break;
             }
         }

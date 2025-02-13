@@ -6,22 +6,22 @@ public class StartAnim
     // 기차 문자열 배열 (1줄씩 따로)
     private static string[] train = new string[]
     {
-        "   ____     __     ___       _             _  _           ",
-        "  |__ /    / /    | __|   __| |   __ _    | || |   ___    ",
-        "   |_ \\   / _ \\   |__ \\  / _` |  / _` |    \\_, |  (_-<    ",
-        "  |___/   \\___/   |___/  \\__,_|  \\__,_|   _|__/   /__/_   ",
-        "_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|  ",
-        "\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'  "
+        "   ____     __     ___       _             _  _              ",
+        "  |__ /    / /    | __|   __| |   __ _    | || |   ___       ",
+        "   |_ \\   / _ \\   |__ \\  / _` |  / _` |    \\_, |  (_-<       ",
+        "  |___/   \\___/   |___/  \\__,_|  \\__,_|   _|__/   /__/_      ",
+        "_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|     ",
+        "\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'\"`-0-0-'     "
     };
 
     private static string[] title = new string[]
     {
-        "   _____ _____ _____ ____                                 ",
-        "  |__  // ___// ___// __ \\___ ____  _______               ",
-        "   /_ </ __ \\/___ \\/ / / / __` / / / / ___/               ",
-        " ___/ / /_/ /___/ / /_/ / /_/ / /_/ /__ \\                 ",
-        "/____/\\____/_____/_____/\\___,_\\__, /____/                 ",
-        "                             /____/                       "
+        "   _____ _____ _____ ____                                    ",
+        "  |__  // ___// ___// __ \\___ ____  _______                  ",
+        "   /_ </ __ \\/___ \\/ / / / __` / / / / ___/                  ",
+        " ___/ / /_/ /___/ / /_/ / /_/ / /_/ /__ \\                    ",
+        "/____/\\____/_____/_____/\\___,_\\__, /____/                    ",
+        "                             /____/                          "
     };
 
     /// <summary>
@@ -41,8 +41,8 @@ public class StartAnim
         int engineLength = 8;  // 기관차 길이 (글자 개수 기준)
 
         // 속도 조절을 위한 값 설정 (minSpeed: 느린 속도, maxSpeed: 빠른 속도)
-        double minSpeed = 0.2;  // 가장 느릴 때
-        double maxSpeed = 2.5;  // 가장 빠를 때
+        double minSpeed = 0.25;  // 가장 느릴 때
+        double maxSpeed = 5;  // 가장 빠를 때
 
         int yOffset = 1; // 기차 위쪽 공백 추가
 
@@ -72,13 +72,18 @@ public class StartAnim
                                 if (j < engineLength * 2)
                                     Console.ForegroundColor = ConsoleColor.Magenta;
                                 else if (j < engineLength * 3)
-                                    Console.ForegroundColor = ConsoleColor.Cyan;
+                                    Console.ForegroundColor = ConsoleColor.Blue;
                                 else
                                     Console.ForegroundColor = ConsoleColor.White;
                             }
                             else
                             {
-                                Console.ForegroundColor = ConsoleColor.DarkGray;
+                                if (j < engineLength * 2)
+                                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                                else if (j < engineLength * 3)
+                                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                else
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
 
                                 if (j % 8 == 0)
                                     Console.ForegroundColor = ConsoleColor.White;
@@ -92,15 +97,17 @@ public class StartAnim
                 }
             }
 
-            // Ease In-Out 속도 조절
+            // Ease Out Expo 속도 조절
             double progress = (x - targetX) / (startX - targetX); // 0 ~ 1
-            double easeSpeed = 1 - Math.Pow(1 - progress, 3); // Ease Out Cubic 공식
+            double easeSpeed = 1 - Math.Pow(2, -10 * progress); // Ease Out Expo 공식
 
             double moveSpeed = minSpeed + (maxSpeed - minSpeed) * easeSpeed; // 가변 속도 적용
             x -= moveSpeed; // x 위치 이동
 
             Thread.Sleep(10); // 고정된 짧은 간격으로 업데이트 (부드러움 유지)
         }
+
+        Thread.Sleep(500);
 
         // 가로 방향 페이드 효과 + 트랜지션 (네모 기호) 적용
         int maxSteps = Math.Max(screenWidth, title.Length);
@@ -113,10 +120,10 @@ public class StartAnim
                 if (posX >= 0 && posX < title[i].Length - 15) // 화면 범위 내에서만 출력
                 {
                     Console.SetCursorPosition(posX, i + 1);
-                    Console.Write("▒"); // 트랜지션 효과 (페이드 아웃)
+                    Console.Write("/"); // 트랜지션 효과 (페이드 아웃)
                 }
 
-                // ✨ 네모가 지나간 자리에서 새로운 텍스트가 등장
+                // 네모가 지나간 자리에서 새로운 텍스트가 등장
                 if (posX > 0 && posX <= train[i].Length)
                 {
                     Console.SetCursorPosition(posX - 1, i + 1);
@@ -126,7 +133,7 @@ public class StartAnim
                         if (posX < 15)
                             Console.ForegroundColor = ConsoleColor.Magenta;
                         else if (posX < 21)
-                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.Blue;
                         else
                             Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -135,7 +142,7 @@ public class StartAnim
                         if (posX < 15)
                             Console.ForegroundColor = ConsoleColor.Magenta;
                         else if (posX < 21)
-                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.Blue;
                         else
                             Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -144,7 +151,7 @@ public class StartAnim
                         if (posX < 14)
                             Console.ForegroundColor = ConsoleColor.Magenta;
                         else if (posX < 20)
-                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.Blue;
                         else
                             Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -153,7 +160,7 @@ public class StartAnim
                         if (posX < 14)
                             Console.ForegroundColor = ConsoleColor.Magenta;
                         else if (posX < 20)
-                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.Blue;
                         else
                             Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -162,7 +169,7 @@ public class StartAnim
                         if (posX < 13)
                             Console.ForegroundColor = ConsoleColor.Magenta;
                         else if (posX < 19)
-                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.Blue;
                         else
                             Console.ForegroundColor = ConsoleColor.White;
                     }

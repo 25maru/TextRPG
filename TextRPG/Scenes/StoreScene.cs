@@ -15,25 +15,15 @@ public class StoreScene : Scene
         {
             Utils.ShowHeader("상점", "필요한 아이템을 얻을 수 있는 상점입니다.");
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[보유 골드]");
+            Utils.ColorText("[보유 골드]", ConsoleColor.Yellow);
             Console.WriteLine($"{player.Gold} G\n");
-            Console.ResetColor();
 
-            // Console.WriteLine("[아이템 목록]");
+            Utils.ColorText("[장비 아이템 목록]", ConsoleColor.Cyan);
 
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
             int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
             string longestDescription = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Description)).First().Description;
             int longestPrice = shopItems.Select(item => item.Price.ToString()).OrderByDescending(price => price.Length).First().Length;
-
-            // Console.ForegroundColor = ConsoleColor.DarkGray;
-            // Console.Write("+");
-            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestItem)) + "+");
-            // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
-            // Console.WriteLine(new string('-', 4 + longestPrice) + "+");
-            // Console.ResetColor();
 
             for (int i = 0; i < shopItems.Count; i++)
             {
@@ -53,35 +43,15 @@ public class StoreScene : Scene
                     if (item.IsPurchased)
                         itemColor = ConsoleColor.DarkGray;
 
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write("- ");
-                    Console.ForegroundColor = itemColor;
-                    Console.Write(name);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write(" | ");
-                    Console.ForegroundColor = itemColor;
-                    Console.Write(bonus);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write(" | ");
-                    Console.ForegroundColor = itemColor;
-                    Console.Write(description);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write(" | ");
-                    Console.ForegroundColor = itemColor;
-                    Console.WriteLine(price);
-                    Console.ResetColor();
+                    Utils.ItemText("- ", name, color: itemColor);
+                    Utils.ItemText(" | ", bonus, color: itemColor);
+                    Utils.ItemText(" | ", description, color: itemColor);
+                    Utils.ItemTextLine(" | ", price, color: itemColor);
                 }
             }
 
-            // Console.ForegroundColor = ConsoleColor.DarkGray;
-            // Console.Write("+");
-            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestItem)) + "+");
-            // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
-            // Console.WriteLine(new string('-', 4 + longestPrice) + "+");
-            // Console.ResetColor();
-
             Console.WriteLine();
+            Utils.ColorText("[소비 아이템 목록]", ConsoleColor.Cyan);
 
             for (int i = 0; i < shopItems.Count; i++)
             {
@@ -101,34 +71,14 @@ public class StoreScene : Scene
                     if (item.IsPurchased)
                         itemColor = ConsoleColor.DarkGray;
 
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write("- ");
-                    Console.ForegroundColor = itemColor;
-                    Console.Write(name);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write(" | ");
-                    Console.ForegroundColor = itemColor;
-                    Console.Write(bonus);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write(" | ");
-                    Console.ForegroundColor = itemColor;
-                    // Console.Write(description);
-                    // Console.ForegroundColor = ConsoleColor.DarkGray;
-                    // Console.Write(" | ");
-                    // Console.ForegroundColor = itemColor;
-                    Console.WriteLine(price);
-                    Console.ResetColor();
+                    Utils.ItemText("- ", name, color: itemColor);
+                    Utils.ItemText(" | ", bonus, color: itemColor);
+                    // Utils.ItemText(" | ", description, color: itemColor);
+                    Utils.ItemTextLine(" | ", price, color: itemColor);
                 }
             }
 
-            // Console.ForegroundColor = ConsoleColor.DarkGray;
-            // Console.Write("+");
-            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestItem)) + "+");
-            // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-            // Console.Write(new string('-', 2 + Utils.GetDisplayWidth(longestDescription)) + "+");
-            // Console.WriteLine(new string('-', 4 + longestPrice) + "+");
-            // Console.ResetColor();
-
+            Console.WriteLine();
             Console.WriteLine();
 
             Utils.OptionText(1, "장비 아이템 구매");
@@ -169,12 +119,12 @@ public class StoreScene : Scene
         {
             Utils.ShowHeader("상점 - 장비 아이템 구매", "필요한 아이템을 얻을 수 있는 상점입니다.");
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[보유 골드]");
+            Utils.ColorText("[보유 골드]", ConsoleColor.Yellow);
             Console.WriteLine($"{player.Gold} G\n");
-            Console.ResetColor();
 
-            // Console.WriteLine("[아이템 목록]");
+            Utils.ColorText("[아이템 목록]", ConsoleColor.Cyan);
+
+            shopItems = shopItems.OrderBy(item => item.Type == ItemType.Potion ? 1 : 0).ToList();
 
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
             int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
@@ -196,19 +146,19 @@ public class StoreScene : Scene
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                     else
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.Write($"{i + 1}");
+                    Console.Write(i + 1);
 
                     Console.ResetColor();
 
-                    if (i < 9)
-                        Console.Write(".  ");
-                    else
-                        Console.Write(". ");
+                    ConsoleColor itemColor = ConsoleColor.Gray;
 
                     if (item.IsPurchased)
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"{name} | {bonus} | {description} | {price}");
-                    Console.ResetColor();
+                        itemColor = ConsoleColor.DarkGray;
+
+                    Utils.ItemText(i < 9 ? ".  " : ". ", name, color: itemColor, prefixColor: itemColor);
+                    Utils.ItemText(" | ", bonus, color: itemColor);
+                    Utils.ItemText(" | ", description, color: itemColor);
+                    Utils.ItemTextLine(" | ", price, color: itemColor);
                 }
             }
 
@@ -241,7 +191,7 @@ public class StoreScene : Scene
     }
 
     /// <summary>
-    /// 소비 아이템 구메 화면
+    /// 소비 아이템 구매 화면
     /// </summary>
     private void PurchaseUseItem()
     {
@@ -252,12 +202,12 @@ public class StoreScene : Scene
         {
             Utils.ShowHeader("상점 - 소비 아이템 구매", "필요한 아이템을 얻을 수 있는 상점입니다.");
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[보유 골드]");
+            Utils.ColorText("[보유 골드]", ConsoleColor.Yellow);
             Console.WriteLine($"{player.Gold} G\n");
-            Console.ResetColor();
 
-            Console.WriteLine("[아이템 목록]");
+            Utils.ColorText("[아이템 목록]", ConsoleColor.Cyan);
+
+            shopItems = shopItems.OrderBy(item => item.Type != ItemType.Potion ? 1 : 0).ToList();
 
             string longestItem = shopItems.OrderByDescending(item => Utils.GetDisplayWidth(item.Name)).First().Name;
             int longestBonus = shopItems.Select(item => item.Type == ItemType.Weapon ? item.AttackBonus.ToString() : item.HealthBonus.ToString()).OrderByDescending(bonus => bonus.Length).First().Length;
@@ -276,19 +226,19 @@ public class StoreScene : Scene
                     string price = item.IsPurchased ? "구매완료" : $"{item.Price} G";
 
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.Write($"{i + 1}");
+                    Console.Write(i + 1);
 
                     Console.ResetColor();
+
+                    ConsoleColor itemColor = ConsoleColor.Gray;
 
                     if (item.IsPurchased)
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    if (i < 9)
-                        Console.Write(".  ");
-                    else
-                        Console.Write(". ");
+                        itemColor = ConsoleColor.DarkGray;
 
-                    Console.WriteLine($"{name} | {bonus} | {description} | {price}");
-                    Console.ResetColor();
+                    Utils.ItemText(i < 9 ? ".  " : ". ", name, color: itemColor, prefixColor: itemColor);
+                    Utils.ItemText(" | ", bonus, color: itemColor);
+                    Utils.ItemText(" | ", description, color: itemColor);
+                    Utils.ItemTextLine(" | ", price, color: itemColor);
                 }
             }
 
@@ -332,12 +282,10 @@ public class StoreScene : Scene
         {
             Utils.ShowHeader("상점 - 아이템 판매", "필요한 아이템을 얻을 수 있는 상점입니다.");
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[보유 골드]");
+            Utils.ColorText("[보유 골드]", ConsoleColor.Yellow);
             Console.WriteLine($"{player.Gold} G\n");
-            Console.ResetColor();
 
-            Console.WriteLine("[아이템 목록]");
+            Utils.ColorText("[아이템 목록]", ConsoleColor.Cyan);
 
             if (player.Inventory.Count == 0)
                 Utils.InfoText("판매할 아이템이 없습니다.");
@@ -359,19 +307,19 @@ public class StoreScene : Scene
                     string price = item.CanSell ? $"{sellPrice} G" : "판매불가";
 
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.Write($"{i + 1}");
+                    Console.Write(i + 1);
 
                     Console.ResetColor();
 
-                    if (i < 9)
-                        Console.Write(".  ");
-                    else
-                        Console.Write(". ");
+                    ConsoleColor itemColor = ConsoleColor.Gray;
 
                     if (!item.CanSell)
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"{name} | {bonus} | {description} | {price}");
-                    Console.ResetColor();
+                        itemColor = ConsoleColor.DarkGray;
+
+                    Utils.ItemText(i < 9 ? ".  " : ". ", name, color: itemColor, prefixColor: itemColor);
+                    Utils.ItemText(" | ", bonus, color: itemColor);
+                    Utils.ItemText(" | ", description, color: itemColor);
+                    Utils.ItemTextLine(" | ", price, color: itemColor);
                 }
             }
 
@@ -410,10 +358,7 @@ public class StoreScene : Scene
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine(". 나가기)");
 
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.Write(">> ");
-                        string choice = Console.ReadLine();
-                        Console.ResetColor();
+                        string choice = Utils.GetInput();
 
                         if (choice == "Y" || choice == "y")
                         {

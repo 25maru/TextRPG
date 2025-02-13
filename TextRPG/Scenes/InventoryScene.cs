@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Tool;
 
 public class InventoryScene : Scene
@@ -12,7 +13,8 @@ public class InventoryScene : Scene
         {
             Utils.ShowHeader("인벤토리", "보유 중인 아이템을 관리할 수 있습니다.");
 
-            Console.WriteLine("[아이템 목록]\n");
+            Console.WriteLine();
+            Utils.ColorText("[장비 아이템 목록]", ConsoleColor.Cyan);
 
             player.Inventory = player.Inventory.OrderBy(item => item.Type == ItemType.Potion ? 1 : 0).ToList();
 
@@ -26,21 +28,27 @@ public class InventoryScene : Scene
             }
             else
             {
-                // Console.ForegroundColor = ConsoleColor.Cyan;
-                // Console.Write("(장비)");
-                // Console.ResetColor();
-                // Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
-                // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-                // Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
-
                 foreach (var item in player.Inventory)
                 {
                     if (item.Type != ItemType.Potion)
                     {
-                        string equippedMarker = item.IsEquipped ? "[E] " : "[ ] ";
+                        string type = item.Type switch
+                        {
+                            ItemType.Weapon => "무기",
+                            ItemType.Shield => "방패",
+                            ItemType.Helmet => "투구",
+                            ItemType.Armor => "갑옷",
+                            ItemType.Potion => "포션",
+                            _ => ""
+                        };
+
+                        string equippedMarker = item.IsEquipped ? "[E]" : "[ ]";
                         string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
                         string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
                         bonus = Utils.FormatString(bonus, 8 + longestBonus);
+
+                        if (item.IsPurchased)
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
 
                         Console.Write("- ");
 
@@ -49,20 +57,18 @@ public class InventoryScene : Scene
                         else
                             Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.Write($"{equippedMarker}");
-                        Console.ResetColor();
 
-                        Console.WriteLine($"{name} | {bonus} | {item.Description}");
+                        ConsoleColor itemColor = ConsoleColor.Gray;
+
+                        Utils.ItemText(" ", name, color: itemColor);
+                        Utils.ItemText(" | ", type, color: itemColor);
+                        Utils.ItemText(" | ", bonus, color: itemColor);
+                        Utils.ItemTextLine(" | ", item.Description, color: itemColor);
                     }
                 }
 
-                // Console.ForegroundColor = ConsoleColor.Cyan;
-                // Console.Write("(소비)");
-                // Console.ResetColor();
-                // Console.Write(new string('-', 1 + Utils.GetDisplayWidth(longestItem)) + "+");
-                // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-                // Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
-
                 Console.WriteLine();
+                Utils.ColorText("[소비 아이템 목록]", ConsoleColor.Cyan);
 
                 foreach (var item in player.Inventory)
                 {
@@ -72,23 +78,21 @@ public class InventoryScene : Scene
                         string bonus = item.AttackBonus > 0 ? $"공격력 +{item.AttackBonus}" : (item.HealthBonus > 0 ? $"체력   +{item.HealthBonus}" : "        ");
                         bonus = Utils.FormatString(bonus, 8 + longestBonus);
 
-                        Console.Write("- ");
+                        ConsoleColor itemColor = ConsoleColor.Gray;
 
-                        // Console.WriteLine($"    {name} | {bonus} | {item.Description}");
-                        Console.WriteLine($"    {name} | {bonus}");
+                        Utils.ItemText("-     ", name, color: itemColor);
+                        Utils.ItemTextLine(" | ", bonus, color: itemColor);
                     }
                 }
-
-                // Console.Write(new string('-', 6 + Utils.GetDisplayWidth(longestItem) + 1) + "+");
-                // Console.Write(new string('-', 9 + longestBonus + 1) + "+");
-                // Console.WriteLine(new string('-', 1 + Utils.GetDisplayWidth(longestDescription)));
             }
+
+            Console.WriteLine();
             Console.WriteLine();
 
             if (player.Inventory.Where(item => item.Type != ItemType.Potion).ToList().Count > 0)
-                Utils.OptionText(1, "장착 관리");
+                Utils.OptionText(1, "장비 아이템 관리");
             else
-                Utils.InfoText("1. 장착 관리");
+                Utils.InfoText("1. 장비 아이템 관리");
 
             if (player.Inventory.Where(item => item.Type == ItemType.Potion).ToList().Count > 0)
                 Utils.OptionText(2, "소비 아이템 관리");
@@ -129,7 +133,7 @@ public class InventoryScene : Scene
         {
             Utils.ShowHeader("인벤토리 - 장착 관리", "보유 중인 아이템을 사용할 수 있습니다.");
 
-            Console.WriteLine("[아이템 목록]");
+            Utils.ColorText("[아이템 목록]", ConsoleColor.Cyan);
 
             player.Inventory = player.Inventory.OrderBy(item => item.Type == ItemType.Potion ? 1 : 0).ToList();
 
@@ -142,7 +146,17 @@ public class InventoryScene : Scene
 
                 if (item.Type != ItemType.Potion)
                 {
-                    string equippedMarker = item.IsEquipped ? "[E] " : "[ ] ";
+                    string type = item.Type switch
+                    {
+                        ItemType.Weapon => "무기",
+                        ItemType.Shield => "방패",
+                        ItemType.Helmet => "투구",
+                        ItemType.Armor => "갑옷",
+                        ItemType.Potion => "포션",
+                        _ => ""
+                    };
+
+                    string equippedMarker = item.IsEquipped ? "[E]" : "[ ]";
                     string name = Utils.FormatString($"{item.Name}", Utils.GetDisplayWidth(longestItem));
                     string bonus = item.Type == ItemType.Weapon ? $"공격력 +{item.AttackBonus}" : $"체력   +{item.HealthBonus}";
                     bonus = Utils.FormatString(bonus, 8 + longestBonus);
@@ -151,19 +165,13 @@ public class InventoryScene : Scene
                     Console.Write(i + 1);
                     Console.ResetColor();
 
-                    if (i < 9)
-                        Console.Write(".  ");
-                    else
-                        Console.Write(". ");
+                    bool more10 = i < 9 && player.Inventory.Where(item => item.Type != ItemType.Potion).ToList().Count > 9;
 
-                    if (item.IsEquipped)
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                    else
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write($"{equippedMarker}");
-                    Console.ResetColor();
-
-                    Console.WriteLine($"{name} | {bonus} | {item.Description}");
+                    Utils.ItemText(more10 ? ".  " : ". ", equippedMarker, color: item.IsEquipped ? ConsoleColor.Yellow : ConsoleColor.DarkGray);
+                    Utils.ItemText(" ", name);
+                    Utils.ItemText(" | ", type);
+                    Utils.ItemText(" | ", bonus);
+                    Utils.ItemTextLine(" | ", item.Description);
                 }
             }
 
@@ -206,7 +214,7 @@ public class InventoryScene : Scene
         {
             Utils.ShowHeader("인벤토리 - 소비 아이템 관리", "보유 중인 아이템을 관리할 수 있습니다.");
 
-            Console.WriteLine("[아이템 목록]");
+            Utils.ColorText("[아이템 목록]", ConsoleColor.Cyan);
 
             player.Inventory = player.Inventory.OrderBy(item => item.Type != ItemType.Potion ? 1 : 0).ToList();
 
@@ -227,13 +235,10 @@ public class InventoryScene : Scene
                     Console.Write(i + 1);
                     Console.ResetColor();
 
-                    if (i < 9)
-                        Console.Write(".  ");
-                    else
-                        Console.Write(". ");
+                    bool more10 = i < 9 && player.Inventory.Where(item => item.Type != ItemType.Potion).ToList().Count > 9;
 
-                    Console.WriteLine($"{name} | {bonus} | {item.Description}");
-                    // Console.WriteLine($"{name} | {bonus}");
+                    Utils.ItemText(more10 ? ".  " : ". ", name);
+                    Utils.ItemTextLine(" | ", bonus);
                 }
             }
 

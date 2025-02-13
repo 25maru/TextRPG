@@ -25,6 +25,9 @@ public class Battle
         while ((!player.IsDead) && (IsAliveMonstersExists(monsters))) // 몬스터 사망처리
         {
             PlayerTurn();
+
+            Utils.ShowHeader("전투", "몬스터의 턴");
+
             for (int i = 0; i < monsters.Count; i++) //몬스터 만큼 턴을 씀 
             {
                 if (monsters[i].IsDead) //번호 몬스터가 죽어있으면
@@ -34,6 +37,8 @@ public class Battle
                 else //살아있으면
                 {
                     MonsterTurn(monsters[i], player);
+
+                    Thread.Sleep(500);
                 }
             }
         }
@@ -62,6 +67,8 @@ public class Battle
 
         Console.WriteLine("[내 정보]");
         Utils.PlayerText(player);
+
+        Console.WriteLine();
 
         Console.WriteLine("[몬스터 정보]");
 
@@ -124,8 +131,6 @@ public class Battle
 
     public void MonsterTurn(Monster TurnMonster, Character character) //몬스터의 턴
     {
-        Utils.ShowHeader("전투", "몬스터의 턴");
-
         if (character.IsDead == false) //플레이어가 살아있으면
         {
             MonsterAttack(TurnMonster, character);

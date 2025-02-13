@@ -1,10 +1,15 @@
-﻿using Tool;
+﻿using System.IO;
+using Tool;
 
 public class Program
 {
     static void Main(string[] args)
     {
         GameManager gameManager = GameManager.Instance;
+
+        Console.CursorVisible = false; // 커서 숨기기
+        Console.ReadLine();
+        Console.CursorVisible = true; // 커서 보이기
         gameManager.GameStart();
     }
 }
@@ -77,15 +82,34 @@ public class GameManager
         // 로고 애니메이션 재생
         StartAnim.Play();
 
-        // Console.Clear();
-           
-        // Console.WriteLine("                                           ");
-        // Console.WriteLine("   _____ _____ __________                  ");
-        // Console.WriteLine("  |__  // ___// ____/ __ \\___ ____  _______");
-        // Console.WriteLine("   /_ </ __ \\/___ \\/ / / / __` / / / / ___/");
-        // Console.WriteLine(" ___/ / /_/ /___/ / /_/ / /_/ / /_/ /__ \\  ");
-        // Console.WriteLine("/____/\\____/_____/_____/\\___,_\\__, /____/  ");
-        // Console.WriteLine("                             /____/        \n");
+        Console.Clear();
+
+        // 콘솔 출력을 dualConsoleWriter로 변경
+        Console.SetOut(Utils.dualConsoleWriter);
+
+        Console.WriteLine();
+
+        Utils.ColorText("   _____ _____", ConsoleColor.Magenta, false);
+        Utils.ColorText(" _____ ", ConsoleColor.Blue, false);
+        Utils.ColorText("____                  ", ConsoleColor.White, true);
+
+        Utils.ColorText("  |__  // ___/", ConsoleColor.Magenta, false);
+        Utils.ColorText("/ ___/", ConsoleColor.Blue, false);
+        Utils.ColorText("/ __ \\___ ____  _______", ConsoleColor.White, true);
+
+        Utils.ColorText("   /_ </ __ \\", ConsoleColor.Magenta, false);
+        Utils.ColorText("/___ \\", ConsoleColor.Blue, false);
+        Utils.ColorText("/ / / / __` / / / / ___/", ConsoleColor.White, true);
+
+        Utils.ColorText(" ___/ / /_/ /", ConsoleColor.Magenta, false);
+        Utils.ColorText("___/ /", ConsoleColor.Blue, false);
+        Utils.ColorText(" /_/ / /_/ / /_/ /__ \\  ", ConsoleColor.White, true);
+
+        Utils.ColorText("/____/\\____/", ConsoleColor.Magenta, false);
+        Utils.ColorText("_____/", ConsoleColor.Blue, false);
+        Utils.ColorText("_____/\\___,_\\__, /____/  ", ConsoleColor.White, true);
+
+        Utils.ColorText("                             /____/        \n", ConsoleColor.White, true);
 
         Console.WriteLine("\n스파르타 마을에 오신 것을 환영합니다.");
         Thread.Sleep(1000);
@@ -93,10 +117,7 @@ public class GameManager
         Console.WriteLine("당신의 이름을 알려주세요.");
         Thread.Sleep(1000);
 
-        Console.ForegroundColor = ConsoleColor.DarkYellow;
-        Console.Write(">> ");
-        player.Name = Console.ReadLine();
-        Console.ResetColor();
+        player.Name = Utils.GetInput();
 
         if (player.Name == "르탄")
         {
@@ -107,6 +128,18 @@ public class GameManager
             player.BaseHealth *= 5f;
             player.Health = player.TotalHealth;
             player.Gold *= 100000;
+        }
+
+        if (player.Name == "성진우")
+        {
+            Utils.InfoText("히든 클래스 [그림자 군주]가 선택되었습니다.");
+
+            player.Class = "그림자 군주";
+            player.Level = 146;
+            player.BaseAttack *= 1000f;
+            player.BaseHealth *= 1000f;
+            player.Health = player.TotalHealth;
+            player.Gold *= 1000;
         }
 
         GetStarterItem();
